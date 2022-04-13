@@ -2,20 +2,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
+// } Driver Code Ends
 class Solution
 {
-    public:
+public:
     //Function to find the maximum number of meetings that can
     //be performed in a meeting room.
     int maxMeetings(int start[], int end[], int n)
     {
         multimap<int, int> mp;
-        for (int i = 0; i<n; i++) mp.insert({end[i], start[i]});
+        for (int i = 0; i < n; i++) mp.insert({end[i], start[i]});
         auto it1 = mp.begin();
         auto it = mp.begin();
         int e = it->first, count = 1;
-        for (auto ele: mp) cout << ele.second << " # " << ele.first << endl;
+        for (auto ele : mp) cout << ele.second << " # " << ele.first << endl;
         for (it++; it != mp.end(); it++) {
             if (it->second > e) {
                 count++;

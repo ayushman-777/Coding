@@ -3,7 +3,9 @@ project(sublime)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_executable(ShortestUniquePrefix ShortestUniquePrefix.cpp)
 add_executable(testing testing.cpp)
+add_executable(allFourSumNumbers allFourSumNumbers.cpp)
 add_executable(nQueen nQueen.cpp)
 add_executable(RatInMaze RatInMaze.cpp)
 add_executable(LargestBST.cpp LargestBST.cpp)
