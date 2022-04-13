@@ -1,0 +1,213 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.21"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "sublime",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "B-BTtoDLL::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-B-BTtoDLL-Debug-10548a451b35f0129e87.json",
+					"name" : "B-BTtoDLL",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "B-RoofConstruction::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-B-RoofConstruction-Debug-7aa9ed5056b53398a3e7.json",
+					"name" : "B-RoofConstruction",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "BSTfromPreorder2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-BSTfromPreorder2-Debug-862dc30ffb1dced298ca.json",
+					"name" : "BSTfromPreorder2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeleteNodeInBST::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeleteNodeInBST-Debug-ca2aa4b6dbc8ffd6693e.json",
+					"name" : "DeleteNodeInBST",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "InorderSuccessorBST::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-InorderSuccessorBST-Debug-64a658a99658e77e9d6f.json",
+					"name" : "InorderSuccessorBST",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LargestBST.cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LargestBST.cpp-Debug-f9c46c9e6aa7f8219d74.json",
+					"name" : "LargestBST.cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LowestCommonAncestor::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LowestCommonAncestor-Debug-dfbc0a66b755605d93e0.json",
+					"name" : "LowestCommonAncestor",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "MinDistanceBetweenTwoNodes::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-MinDistanceBetweenTwoNodes-Debug-0b6ad055eee10b96c8f3.json",
+					"name" : "MinDistanceBetweenTwoNodes",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "RatInMaze::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-RatInMaze-Debug-7319f05f7765122745c5.json",
+					"name" : "RatInMaze",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ShortestUniquePrefix::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ShortestUniquePrefix-Debug-375628545b79ef1fa403.json",
+					"name" : "ShortestUniquePrefix",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "allFourSumNumbers::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-allFourSumNumbers-Debug-d2f591c351127b41eb3d.json",
+					"name" : "allFourSumNumbers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "dubplicateSubTreeInBT::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dubplicateSubTreeInBT-Debug-784eeaeb97208c394555.json",
+					"name" : "dubplicateSubTreeInBT",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-main-Debug-72cec344e0b2d6cb7f81.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "nQueen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-nQueen-Debug-d14ab0e7322ea43ecad0.json",
+					"name" : "nQueen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "nextPermutation::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-nextPermutation-Debug-4984397e560259f2160e.json",
+					"name" : "nextPermutation",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "testing::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-testing-Debug-5d77028681f8bb39714e.json",
+					"name" : "testing",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "wordBreak::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-wordBreak-Debug-93699e248e84e1444058.json",
+					"name" : "wordBreak",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "xequaly::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-xequaly-Debug-85bd8093001e3a1f6056.json",
+					"name" : "xequaly",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/patha/Projects/personalCode/cmake-build-debug",
+		"source" : "D:/patha/Projects/personalCode"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\LargestBST.cpp.dir/objects.a
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe qc CMakeFiles\LargestBST.cpp.dir/objects.a @CMakeFiles\LargestBST.cpp.dir\objects1.rsp
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\LargestBST.cpp.dir/objects.a -Wl,--no-whole-archive -o LargestBST.cpp.exe -Wl,--out-implib,libLargestBST.cpp.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\LargestBST.cpp.dir\linklibs.rsp
