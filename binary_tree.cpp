@@ -170,7 +170,7 @@ bool isBST(Node *root) {
         return true;
     }
     if (isBTLesser(root->left, root->data) && isBTGreater(root->right, root->data) && isBST(root->left) &&
-        isBST(root->right)) {
+            isBST(root->right)) {
         return true;
     }
     return false;
@@ -181,7 +181,7 @@ bool isBSTFast(Node *root, int minData, int maxData) {
         return true;
     }
     if (root->data > minData && root->data < maxData && isBSTFast(root->left, minData, root->data) &&
-        isBSTFast(root->right, root->data, maxData)) {
+            isBSTFast(root->right, root->data, maxData)) {
         return true;
     }
     return false;
@@ -404,7 +404,7 @@ vector<int> topView(Node *root) {
     if (root == nullptr) return res;
     map<int, pair<int, int>> m;
     topViewUtil(root, 0, 0, m);
-    for (auto f: m) {
+    for (auto f : m) {
         res.push_back(f.second.first);
     }
     return res;
@@ -422,7 +422,7 @@ vector<int> bottomView(Node *root) {
     if (root == nullptr) return res;
     map<int, pair<int, int>> map;
     bottomViewUtil(root, 0, 0, map);
-    for (auto m: map) {
+    for (auto m : map) {
         res.push_back(m.second.first);
     }
     return res;
@@ -504,8 +504,8 @@ vector<int> diagonal(Node *root) {
     if (root == nullptr) return res;
     map<int, vector<int>> mv;
     diagonalUtils(root, 0, mv);
-    for (auto item1: mv) {
-        for (auto item2: item1.second) {
+    for (auto item1 : mv) {
+        for (auto item2 : item1.second) {
             res.push_back(item2);
         }
     }
@@ -649,7 +649,7 @@ bool isSumTree(Node *root) {
     if (root->right == nullptr && (root->left->data == root->data)) return true;
     if (root->left == nullptr && (root->right->data == root->data)) return true;
     if ((root->data == sumSubTree(root->left) + sumSubTree(root->right)) && isSumTree(root->left)
-        && isSumTree(root->right))
+            && isSumTree(root->right))
         return true;
     return false;
 }
@@ -1048,7 +1048,7 @@ int main() {
         } else if (ans == 16) {
             cout << endl << "Top View of Binary Tree is   :";
             vector<int> temp = topView(root);
-            for (int i: temp) {
+            for (int i : temp) {
                 cout << i << "  ";
             }
         } else if (ans == 17) {

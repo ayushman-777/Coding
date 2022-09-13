@@ -3,11 +3,6 @@
 #pragma GCC target("avx,avx2,fma")
 
 using namespace std;
-#ifdef DEBUG
-#include "D:/patha/Projects/Competitive Programming/debug.h"
-#else
-#define dbg(x...)
-#endif
 
 template<typename T1, typename T2> // cin >> pair<T1, T2>
 istream& operator>>(istream &istream, pair<T1, T2> &p) { return (istream >> p.first >> p.second); }
@@ -23,25 +18,32 @@ const char nl = '\n';
 const int MX = 100001;
 
 #define all(x) x.begin(), x.end()
-#define endl '\n'
 
 void solve() {
-
+	int n, m;
+	cin >> n >> m;
+	vector<int> a(n), b(m);
+	cin >> a >> b;
+	vector<int> c(n + m);
+	int i = 0, j = 0, k = 0;
+	while (i < n || j < m) {
+		if (j == b.size() || (i < a.size() && a[i] < b[j])) {
+			c[k] = a[i];
+			i++, k++;
+		} else {
+			c[k] = b[j];
+			j++, k++;
+		}
+	}
+	cout << c << endl;
 }
 
 int main() {
-#ifdef DEBUG
-  freopen("D:/patha/Projects/Competitive Programming/Error.txt", "w", stderr);
-#endif
-  cin.tie(0)->sync_with_stdio(0);
-  cin.exceptions(cin.failbit);
-  cout.tie(0);
+	cin.tie(0)->sync_with_stdio(0);
+	cin.exceptions(cin.failbit);
+	cout.tie(0);
 
-  int T = 1;
-  cin >> T;
-  while (T--) {
-    solve();
-    dbg(NULL);
-  }
-  return 0;
+	solve();
+
+	return 0;
 }

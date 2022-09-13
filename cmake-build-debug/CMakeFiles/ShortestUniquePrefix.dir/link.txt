@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\ShortestUniquePrefix.dir/objects.a
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe qc CMakeFiles\ShortestUniquePrefix.dir/objects.a @CMakeFiles\ShortestUniquePrefix.dir\objects1.rsp
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\ShortestUniquePrefix.dir/objects.a -Wl,--no-whole-archive -o ShortestUniquePrefix.exe -Wl,--out-implib,libShortestUniquePrefix.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ShortestUniquePrefix.dir\linklibs.rsp

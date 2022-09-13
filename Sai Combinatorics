@@ -1,0 +1,79 @@
+
+const int MAXN = 1e6;
+
+const ll mod = 1e9 + 7;
+
+ll fac[MAXN], infac[MAXN];
+
+// a^b % mod
+ll power(ll a, ll b) {
+	if (b == 0) return 1;
+	if (b & 2 == 0) {
+		ll X = power(a, b / 2);
+		return (X * X) % mod;
+	} else {
+		ll X = power(a, b / 2);
+		ll ans = (X * X) % mod;
+		return (ans * a) % mod;
+	}
+}
+
+ll invserse(ll a) {
+	return power(a, mod - 2);
+}
+
+ll nCr(ll N, ll R) {
+	if (N < 0 || R > N || R < 0) return 0;
+	
+	ll num = fac[N];
+	ll den = (infac[R] * infac[N - R]) % mod;
+	return (num * den) % mod;
+}
+
+void compute_factorials() {
+	fac[0] = 1;
+	
+	infac[0] = 1;
+	
+	for (int i =
+	 1; i < MAXN; i++) {
+	fac[i] = (fac[i - 1] * i) % mod;
+	infac[i] = inverse(fac[i]);
+	}
+}
+
+int main() {
+	compute_factorials();
+	
+	// cout << fac[25]; // for 25!
+	return 0;
+}
+
+
+// Combinations using Pascal's triangle
+
+long long memo[101][101];
+
+long long C(int a, int b) {
+	if (b == 0 || a == b) return 1;
+
+	if (memo[a][b] != -1) return memo[a][b];
+
+	return memo[a][b] = C(a - 1, b) + C(a - 1, b - 1);
+}
+
+int main() {
+	int n, k;
+
+	memset(memo, -1, sizeof(memo));
+
+	while (1) {
+		cin >> n >> k;
+
+		if (n == 0 && k == 0) break;
+
+		cout << n << " things taken " << k << " at a time is " << C(n, k) << " exactly." << endl;
+	}
+
+	return 0;
+}

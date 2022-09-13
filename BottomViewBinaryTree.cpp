@@ -1,8 +1,7 @@
 // { Driver Code Starts
-//Initial Template for C++
-
 #include <bits/stdc++.h>
 using namespace std;
+#define MAX_HEIGHT 100000
 
 // Tree Node
 struct Node
@@ -22,6 +21,9 @@ Node* newNode(int val)
 
     return temp;
 }
+
+
+vector <int> bottomView(Node *root);
 
 // Function to Build Tree
 Node* buildTree(string str)
@@ -89,74 +91,25 @@ Node* buildTree(string str)
 
 
 // } Driver Code Ends
+//Function to return a list containing the bottom view of the given tree.
 
-
-/*
-struct Node
-{
-    int data;
-    Node* left;
-    Node* right;
-};
-*/
-class Solution
-{
+class Solution {
 public:
-    //Function to return a list of nodes visible from the top view
-    //from left to right in Binary Tree.
-    // vector<int> topView(Node *root) {
-    //     vector<int> res;
-    //     if (root == nullptr) return res;
-    //     queue<pair<Node*, int>> que;
-    //     stack<int> left;
-    //     vector<int> right;
-    //     int l = 0, r = 0, h = 1;
-    //     que.push(make_pair(root, 0));
-
-    //     Node *cur;
-    //     while (!que.empty()) {
-    //         cur = que.front().first;
-    //         h = que.front().second;
-    //         que.pop();
-
-    //         if (h < l) {
-    //             left.push(cur->data);
-    //             l = h;
-    //         } else if (h > r) {
-    //             right.push_back(cur->data);
-    //             r = h;
-    //         }
-
-    //         if (cur->left) que.push(make_pair(cur->left, h - 1));
-    //         if (cur->right) que.push(make_pair(cur->right, h + 1));
-    //     }
-
-    //     while (left.size()) {
-    //         res.push_back(left.top());
-    //         left.pop();
-    //     }
-    //     res.push_back(root->data);
-    //     for (auto ele : right) res.push_back(ele);
-    //     return res;
-    // }
-
-    void fillMap(Node *node, map<int, pair<int, int>> &mp, int d, int l) {
+    void fillMap(Node *node, map<int, pair<int, int>> &mp, int d, int h) {
         if (!node) return;
+        if (mp.find(d) == mp.end())
+            mp.insert({d, {node->data, h}});
+        else if (h > mp[d].second)
+            mp[d] = {node->data, h};
 
-        if (mp.find(d) == mp.end()) {
-            mp[d] = {node->data, l};
-        } else if (mp[d].second > l) {
-            mp[d] = {node->data, l};
-        }
-
-        fillMap(node->left, mp, d - 1, l + 1);
-        fillMap(node->right, mp, d + 1, l + 1);
+        fillMap(node->right, mp, d + 1, h + 1);
+        fillMap(node->left, mp, d - 1, h + 1);
     }
-    vector<int> topView(Node *root)
-    {
-        vector<int> ans;
+
+    vector <int> bottomView(Node *root) {
         map<int, pair<int, int>> mp;
         fillMap(root, mp, 0, 0);
+        vector<int> ans;
         for (auto ele : mp) {
             ans.push_back(ele.second.first);
         }
@@ -164,23 +117,25 @@ public:
     }
 };
 
-
-
 // { Driver Code Starts.
 
 int main() {
-    int tc;
-    cin >> tc;
-    cin.ignore(256, '\n');
-    while (tc--) {
-        string treeString;
-        getline(cin, treeString);
+    int t;
+    string tc;
+    getline(cin, tc);
+    t = stoi(tc);
+    while (t--)
+    {
+        string s , ch;
+        getline(cin, s);
+        Node* root = buildTree(s);
         Solution ob;
-        Node *root = buildTree(treeString);
-        vector<int> vec = ob.topView(root);
-        for (int x : vec)
-            cout << x << " ";
+        vector <int> res = ob.bottomView(root);
+        for (int i : res) cout << i << " ";
         cout << endl;
     }
     return 0;
-}  // } Driver Code Ends
+}
+
+
+// } Driver Code Ends
