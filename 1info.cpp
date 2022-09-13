@@ -168,3 +168,28 @@ vector<int> shoppingStore(int x, int n, vector<int>& items)
 
 	return res;
 }
+
+int maxgcd(int n, vector<int> a, int q, vector<int> queries)
+{
+	multiset<int> s;
+
+	for (int i = 0; i < n; i++)
+	{
+		s.insert(__gcd(a[i], a[(i + 1) % n]));
+	}
+
+	int ans = 0;
+
+	for (int i = 0; i < q; i++)
+	{
+		int x = queries[i];
+		s.erase(s.find(__gcd(a[(x - 1 + n) % n], a[x])));
+		s.erase(s.find(__gcd(a[(x + 1) % n], a[(x + 2) % n])));
+		swap(a[x], a[(x + 1) % n]);
+		s.insert(__gcd(a[(x - 1 + n) % n], a[x]));
+		s.insert(__gcd(a[(x + 1) % n], a[(x + 2) % n]));
+		ans ^= *prev(s.end());
+	}
+
+	return ans;
+}

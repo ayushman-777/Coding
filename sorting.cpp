@@ -110,24 +110,27 @@ long long maxSubarraySum(int arr[], int n) {
     return max_so_far;
 }
 
-int multiply(int x, int res[], int res_size) {
-    int carry = 0;
-    for (int i = 0; i < res_size; ++i) {
-        int prod = res[i] * x + carry;
-
-        res[i] = prod % 10;
-
-        carry = prod / 10;
+void heapify(vector<int> &arr, int n, int i) {
+    int largest = i;
+    int l = (2 * i) + 1;
+    int r = (2 * i) + 2;
+    if (l < n and arr[l] > arr[largest]) largest = l;
+    if (r < n and arr[r] > arr[largest]) largest = r;
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
     }
-    while (carry) {
-        res[res_size] = carry % 10;
-        res_size++;
-        carry /= 10;
-    }
-    return res_size;
 }
 
-
+void heapSort(vector<int> &arr) {
+    for (int i = ((arr.size() / 2) - 1); i >= 0; i--) {
+        heapify(arr, arr.size(), i);
+    }
+    for (int i = (arr.size() - 1); i > 0; i--) {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
+    }
+}
 
 int main() {
     int arr[] = {10, 7, 8, 9, 1, 5};
