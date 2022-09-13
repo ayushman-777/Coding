@@ -1,0 +1,13 @@
+// DP (Dynamic Programming)
+
+#  Tabulation -> Bottom Up
+#  Memoization -> Top Down
+
+-> Overlap Problem
+
+#Tricks
+1 > Try to represent the problem in terms of index
+2 > Do all possible Stuffs on that index according  to the problem statement
+3 > Sum of all Stuffs -> count all ways
+Or,
+3 >	min (of all stuffs) -> find min

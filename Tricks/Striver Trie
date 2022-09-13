@@ -1,0 +1,380 @@
+// Node of a trie
+
+struct Node {
+	Node *arr[26];
+	bool flag = false;
+	
+	bool contains(char ch) {
+		return (word[ch - 'a'] != nullptr);
+	}
+	
+	void put(char ch, Node *newNode) {
+		arr[ch - 'a'] = newNode;
+	}
+	
+	Node *getNext(char ch) {
+		return arr[ch - 'a'];
+	}
+	
+	void setFlag() {
+		flag = true;
+	}
+	
+	bool isFlagSet() {
+		return flag;
+	}
+}
+
+Node *root = new Node();
+
+void insert(string word) {
+	Node *temp = root;
+	for (int i = 0; i < word.size(); i++) {
+		if (!temp->contains(word[i])) {
+			Node *newNode = new Node();
+			temp->put(word[i], newNode);
+		}
+		temp = temp->getNext(word[i]);
+	}
+	temp->setFlag();
+}
+
+bool search(string word) {
+	Node *temp = root;
+	for (int i = 0; i < word.size(); i++) {
+		if (temp->contains(word[i])) {
+			temp = temp->getNext(word[i]);
+		} else {
+			return false;
+		}
+	}
+	return temp->isFlagSet();
+}
+
+bool startsWith(string word) {
+	Node *temp = root;
+	for (int i = 0; i < word.size(); i++) {
+		if (temp->contains(word[i])) {
+			temp = temp->getNext();
+		} else return false;
+	}
+	return true;
+}
+
+// Tries-2 (LeetCode 1804)
+
+struct Node {
+	Node *arr[26];
+	int cntWordsEnd = 0;
+	int cntPrefixs = 0;
+	
+	bool contains(char ch) {
+		return (word[ch - 'a'] != nullptr);
+	}
+	
+	void put(char ch, Node *newNode) {
+		arr[ch - 'a'] = newNode;
+	}
+	
+	Node *getNext(char ch) {
+		return arr[ch - 'a'];
+	}
+	
+	void increaseWordsEndsWith() {
+		cntWordsEnd++;
+	}
+	
+	void increaseCountPrefixs() {
+		cntPrefixs++;
+	}
+	
+	void decreaseWordsEndsWith() {
+		cntWordsEnd--;
+	}
+	
+	void decreaseCountPrefixs() {
+		cntPrefixs--;
+	}
+	
+	int getWordsEnd() {
+		return cntWordsEnd;
+	}
+	
+	int getPrefixs() {
+		return cntPrefixs;
+	}
+}
+
+Node *root = new Node();
+
+void insert(string word) {
+	Node *temp = root;
+	for (int i = 0; i < word.size(); i++) {
+		if (!temp->contains(word[i])) {
+			Node *newNode = new Node();
+			temp->put(word[i], newNode);
+		}
+		temp->increaseCountPrefixs();
+		temp = temp->getNext(word[i]);
+	}
+	temp->increaseWordsEndsWith();
+}
+
+int countWordsEqualTo(string word) {
+	Node *temp = root;
+	for (int i = 0; i < word.size(); i++) {
+		if (temp->contains(word[i])) {
+			temp = temp->getNext(word[i]);
+		} else {
+			return 0;
+		}
+	}
+	return temp->getWordsEnd();
+}
+
+
+int startsWith(string word) {
+	Node *temp = root;
+	for (int i = 0; i < word.size(); i++) {
+		if (temp->contains(word[i])) {
+			temp = temp->getNext();
+		} else return 0;
+	}
+	return temp->getPrefixs;
+}
+
+void erase(string word) {
+	Node* temp = root;
+	if (search(word) == 0) return;
+	for (int i = 0; i < word.size(); i++) {
+		temp->decreaseCountPrefixs();
+		temp = temp->getNext();
+	}
+	temp->decreaseWordsEndsWith();
+}
+
+// 1858 - Longest Word With All Prefixes
+
+struct Node {
+	Node *arr[26];
+	bool flag = false;
+	
+	bool contains(char ch) {
+		return (word[ch - 'a'] != nullptr);
+	}
+	
+	void put(char ch, Node *newNode) {
+		arr[ch - 'a'] = newNode;
+	}
+	
+	Node *getNext(char ch) {
+		return arr[ch - 'a'];
+	}
+	
+	void setFlag() {
+		flag = true;
+	}
+	
+	bool isFlagSet() {
+		return flag;
+	}
+}
+
+int insert(string word) {
+	Node *temp = root;
+	int cnt = 0;
+	for (int i = 0; i < word.size(); i++) {
+		if (!temp->contains(word[i])) {
+			Node *newNode = new Node();
+			temp->put(word[i], newNode);
+		}
+		if (temp->isFlagSet()) cnt++;
+		temp = temp->getNext(word[i]);
+	}
+	temp->setFlag();
+	return cnt;
+}
+
+string longestWord(vector<string> &words) {
+	sort(words.begin(), words.end());
+	string res;
+	
+	for (int i = 0; i < words.size(); i++) {
+		int cnt = insert(words[i]);
+		if (cnt == words[i].size()-1 && words[i].size() > res.size())
+			res = words[i];
+	}
+	return res;
+}
+
+
+// https://ideone.com/JJqYYp
+
+
+// Number Of Distinct Substrings In A String
+
+struct Node {
+	Node *arr[26];
+	bool flag = false;
+	
+	bool contains(char ch) {
+		return (word[ch - 'a'] != nullptr);
+	}
+	
+	void put(char ch, Node *newNode) {
+		arr[ch - 'a'] = newNode;
+	}
+	
+	Node *getNext(char ch) {
+		return arr[ch - 'a'];
+	}
+	
+	void setFlag() {
+		flag = true;
+	}
+	
+	bool isFlagSet() {
+		return flag;
+	}
+}
+
+Node *root = new Node();
+
+int distinctSubstrings(string s) {
+	int n = s.size();
+	int cnt = 0;
+	for (int i = 0; i < n; i++) {
+		Node *temp = root;
+		for (int j = i; j < n; j++) {
+			if (!temp->contains(s[j])) {
+				Node *newNode = new Node();
+				temp->put(s[i], newNode);
+				cnt++;
+			}
+			temp = temp->getNext();
+		}
+	}
+	return cnt;
+}
+
+// Minimum XOR Value Pair
+
+struct Node {
+	Node *arr[2];
+	int value;
+	
+	bool contains(int bitNo) {
+		return (arr[bitNo] != nullptr);
+	}
+	
+	void put(int bitNo, Node *newNode) {
+		arr[bitNo] = newNode;
+	}
+	
+	Node *getNext(int bitNo) {
+		return arr[bitNo];
+	}
+}
+
+Node *root = new Node();
+
+void insert(int num) {
+	Node *temp = root;
+	int bitVal;
+	for (int bit = 31; bit >= 0; bit--) {
+		bitVal = num & (1<<bit);
+		if (!temp->contains(bitVal)) {
+			temp->put(bitVal, new Node());
+		}
+		temp->getNext(bitVal);
+	}
+	temp->value = num;
+}
+int findMinimumXorUtil(int num) {
+	Node *temp = root;
+	int bitVal;
+	for (int bit = 31; b >= 0; b--) {
+		bitVal = num & (1<<bit);
+		if (temp->contains(bitVal)) {
+			temp = temp->getNext(bitVal);
+		} else if (temp->contains(!bitVal)) {
+			temp = temp->getNext(!bitVal);
+		} else {
+			return INT_MAX;
+		}
+	}
+	return num ^ temp->value;
+}
+
+int findMinimumXor(int arr[], int n) {
+	int minXor = a[0] ^ a[1];
+	insert(a[0]);
+	for (int i = 1; i < n; i++) {
+		minXor = min(minoXor, findMinimumXorUtil(arr[i]));
+		insert(arr[i]);
+	}
+	return minXor;
+}
+
+// Maximum XOR subarray
+
+struct Node {
+	Node *arr[2];
+	int value;
+	
+	bool contains(int bitNo) {
+		return (arr[bitNo] != nullptr);
+	}
+	
+	void put(int bitNo, Node *newNode) {
+		arr[bitNo] = newNode;
+	}
+	
+	Node *getNext(int bitNo) {
+		return arr[bitNo];
+	}
+}
+
+Node *root = new Node();
+
+void insert(int num) {
+	Node *temp = root;
+	int bitVal;
+	for (int bit = 31; bit >= 0; bit--) {
+		bitVal = num & (1<<bit);
+		if (!temp->contains(bitVal)) {
+			temp->put(bitVal, new Node());
+		}
+		temp->getNext(bitVal);
+	}
+	temp->value = num;
+}
+
+int findMaximumXorUtil(int num) {
+	Node *temp = root;
+	int bitVal;
+	for (int bit = 31; b >= 0; b--) {
+		bitVal = num & (1<<bit);
+		if (temp->contains(!bitVal)) {
+			temp = temp->getNext(!bitVal);
+		} else if (temp->contains(bitVal)) {
+			temp = temp->getNext(bitVal);
+		} else {
+			return INT_MIN;
+		}
+	}
+	return (num ^ temp->value);
+}
+
+int maxSubarrayXOR(int n, int arr[]) {    
+	int prefixXor = arr[0];
+	insert(prefixXor);
+	int maxXor = prefixXor;
+	for(int i = 1; i < n; i++) {
+		prefixXor = prefixXor ^ arr[i];
+		maxXor = max(prefixXor, maxXor);
+		maxXor = max(maxXor, findMaximumXorUtil(prefixXor));
+		insert(prefixXor);
+	}
+	return maxXor;
+}
