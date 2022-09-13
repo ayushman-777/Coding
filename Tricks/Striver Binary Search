@@ -1,0 +1,376 @@
+// Binary Search
+
+int findElement(int arr[], int n, int x) {
+	int low = 0;
+	int high = n-1;
+	int mid;
+	
+	while (low <= high) {
+		mid = (low+high)/2;
+		
+		if (arr[mid] == x) {
+			return mid;
+		}
+		
+		if (x > arr[mid]) {
+			low = mid + 1;
+		} else {
+			high = mid - 1;
+		}
+	}
+	return -1;
+}
+
+// first occurrence of an element
+
+int firstOccurrence(int arr[], int n, int x) {
+	int low = 0;
+	int high = n-1;
+	int mid, ans = -1;
+	
+	while (low <= high) {
+		mid = (low+high)/2;
+		
+		if (arr[mid] == x) {
+			ans = mid;
+			high = mid - 1;
+		} else if (x > arr[mid]) {
+			low = mid + 1;
+		} else {
+			high = mid - 1;
+		}
+	}
+	return ans;
+}
+
+// last occurrence of an element
+
+int lastOccurrence(int arr[], int n, int x) {
+	int low = 0;
+	int high = n-1;
+	int mid, ans = -1;
+	
+	while (low <= high) {
+		mid = (low+hight)/2;
+		
+		if (arr[mid] == x) {
+			ans = mid;
+			low = mid + 1;
+		} else if (x > arr[mid]) {
+			low = mid + 1;
+		} else {
+			high = mid - 1;
+		}
+	}
+	return ans;
+}
+
+// Lower Boound of x
+___________________________
+|						  |
+|    first_element >= x   |
+|_________________________|
+
+// return Index of lower Bound
+// if doesn't exist return n
+int lowerBound(int arr[], int n, int x) {
+	return lower_bound(arr, arr+ n, x) - arr;
+}
+
+// Lower Bound implementation using binary search
+
+// Return Index of Lower Bound
+// if doesn't exist return n
+int lowerBound(int arr[], int n, int x) {
+	int low = 0, high = n - 1, ans = n, mid;
+	
+	while(low <= high) {
+		mid = (low+high)/2;
+		if (arr[mid] >= x) {
+			ans = mid;
+			high = mid - 1;
+		} else {
+			low = mid + 1;
+		}
+	}
+	return ans;
+}
+
+// Upper Bound of x
+___________________________
+|						  |
+|--->  first_element > x  |
+|_________________________|
+
+// return Index of Upper Bound
+// if doesn't exist return n
+int upperBound(int arr[], int n, int x) {
+	return upper_bound(arr,  arr + n, x) - arr;
+}
+
+// Upper Bound implementation using binary search
+
+// Return Index of Upper Bound
+// if doesn't exist return n
+int upperBound(int arr[], int n, int x) {
+	int low = 0, high = n - 1, ans = n, mid;
+	
+	while(low <= high) {
+		mid = (low+high)/2;
+		if (arr[mid] > x) {
+			ans = mid;
+			high = mid - 1;
+		} else {
+			low = mid + 1;
+		}
+	}
+	return ans;
+}
+
+// Sqare Root of n
+
+int sqrt(int n) {
+	int high = n, low = 0, ans = 1, mid;
+	while (low <= high) {
+		mid = (low+high)/2;
+		if ((mid*mid) <= n) {
+			ans = mid;
+			low = mid + 1;
+		} else {
+			high = mid - 1;
+		}
+	}
+	return ans;
+}
+
+// Cube Root of n
+
+int cubert(int n) {
+	int high = n, low = 0, ans = 1, mid;
+	while (low <= high) {
+		mid = (low+high)/2;
+		if ((mid*mid*mid) <= n) {
+			ans = mid;
+			low = mid + 1;
+		} else {
+			high = mid - 1;
+		}
+	}
+	return ans;
+}
+
+// Minimum element in rotated array
+
+findMin(int arr[], int n) {
+	int low = 0, high = n - 1, mid;
+	
+	while (low < high) {
+		mid = (low + high) / 2;
+		
+		if (arr[mid] < arr[high]) {
+			high = mid;
+		} else {
+			low = mid + 1;
+		}
+	}
+	return arr[low]; // can be arr[high]
+}
+
+// Find maximum in Rotated Sorted Array
+
+//O(n) worst case time complexity
+findMax(int arr[], int n) {
+   int high = n - 1, low = 0, mid;
+   while (low <= high) {
+      mid = (low + high) / 2;
+      if (arr[mid] < arr[high]) {
+         high = mid;
+      } else if (arr[mid] > arr[high]) {
+         low = mid + 1;
+      } else {
+         high--;
+      }
+   }
+   return arr[high];
+}
+
+
+// Search in Rotated Sorted Array
+
+search(int arr, int n, int x) {
+	int high = n - 1, low = 0, mid;
+	while (low <= high) {
+		mid = (low+high)/2;
+		if (arr[mid] == x) return mid;
+		
+		// if left part is sorted
+		if (arr[low] <= arr[mid]) {
+			// either it lies on the left or right part
+			if (x >= arr[low] && x <= arr[mid]) {
+				high = mid - 1;
+			} else {
+				low = mid + 1;
+			}
+		}
+		// or right part is sorted
+		else {
+			// either it lies on the left or right part
+			if (x >= arr[mid] && x <= arr[high]) {
+				low = mid + 1;
+			} else {
+				high = mid - 1;
+			}
+		}
+	}
+	return -1;
+}
+
+// find index of peak element(greater than neighbour) in the array
+
+int findPeak(int arr[], int n) {
+	int high = n - 1, low = 0, mid;
+	
+	while (low < high) {
+		mid = (low+high)/2;
+		if (arr[mid] > arr[mid+1]) {
+			high = mid;
+		} else {
+			low = mid + 1;
+		}
+	}
+	return low;
+}
+
+// find minimum length of subarray whose sum greater
+// than or equal to target
+
+int findMinLength(int arr[], int n, int target) {
+	int low = 1, high = n, mid;
+	bool isAnsPossible = false;
+	while (low < high) {
+		mid = (low+high)/2;
+		if (maxSubarraySum(arr, n, target, mid)) {
+			isAnsPossible = true;
+			high = mid;
+		} else {
+			low = mid + 1;
+		}
+	}
+	if (isAnsPossible) return low;
+	return 0;
+}
+
+bool maxSubarraySum(int arr[], int n, int target, int k) {
+	int sum = 0;
+	for (int i = 0; i < n; i++) sum += arr[i];
+	int maxi = sum;
+	int l = 0, h = k;
+	while (h != n - 1) {
+		sum -= arr[l];
+		l++;
+		
+		sum += arr[h];
+		h++;
+		
+		maxi = max(sum, maxi);
+	}
+	
+	return maxi >= target;
+}
+
+// Find the Smallest Divisor Given a Threshold
+
+int findMinDivisor(int arr[], int n, int thres) {
+	int low = 0, high = *max_element(arr, arr+n), mid;
+	int ans = high;
+	while (low <= high) {
+		mid = (low+high)/2;
+		if (findSumAfterDiv(arr, n, mid) <= thres) {
+			ans = mid;
+			high = mid - 1;
+		} else {
+			low = mid + 1;
+		}
+	}
+	return ans;
+}
+
+int findSumAfterDiv(int arr[], int n, int div) {
+	int sum = 0;
+	for (int i = 0; i < n; i++) {
+		sum += (arr[i]/div);
+		
+		if (arr[i] % div != 0) {
+			sum++;
+		}
+	}
+	return sum;
+}
+
+// Split the given array into m sub-arrays such that 
+// maximum sum of all sub arrays is minimum
+
+// n * log(sum-max+1)
+int minMaxSumSubarray(int arr[], int n, int m) {
+	int low = *max_element(arr, arr+n), high = 0, mid;
+	for (int i = 0; i < n; i++) high += arr[i];
+	int ans = high;
+	while (low <= high) {
+		mid = (low+high)/2;
+		if (numberOfSubarrayKeepingLimit(arr, n, m, mid)) {
+			ans = mid;
+			high = mid - 1;
+		} else {
+			low = mid + 1;
+		}
+	}
+	return ans;
+}
+
+// check if number of subarray can be divided in sum of limit
+bool numberOfSubarrayKeepingLimit(int arr[], int n, int m, int limit) {
+	int count = 1, sum = 0;
+	for (int i = 0; i < n; i++) {
+		if (arr[i] > limit) return false;
+		
+		if (arr[i]+sum > limit) {
+			count++;
+			sum = arr[i];
+		} else {
+			sum += arr[i];
+		}
+	}
+	return count <= m;
+}
+
+// Divide Chocolates (reverse of previous question)
+
+// N * log(sum)
+int findMaxChocolates(int arr[], int n, int k) {
+	int low = *min_element, high = 0, mid;
+	for (int i = 0; i < n; i++) high += arr[i];
+	int ans = low;
+	while (low <= high) {
+		mid = (low+high)/2;
+		if (canGetMoreThanKSubarrays(arr, n, k, mid)) {
+			ans = mid;
+			low = mid + 1;
+		} else {
+			high = mid - 1;
+		}
+	}
+	return ans;
+}
+
+bool canGetMoreThanKSubarrays(int arr[], int n, int k, int limit) {
+	int count = 0, sum = 0;
+	for (int i = 0; i < n; i++) {
+		sum += arr[i];
+		
+		if (sum >= limit) {
+			count++;
+			sum = 0;
+		}
+	}
+	return count >= k;
+}

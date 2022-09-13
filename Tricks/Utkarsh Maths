@@ -1,0 +1,114 @@
+int cnt_div(int n) {
+	int ans = 0;
+	for (int i = 1; i * i <= n; i++) {
+		if (n % i == 0)
+			ans++;
+		if (i != n/i)
+			ans++;
+	}
+	return ans;
+}
+
+void div_one_to_n(int n) {
+	vector<int> div(n+1);
+	
+	for (int i = 1; i <= n; i++) {
+		for (int j = i; j <= n; j += i) {
+			div[j]++;
+		}
+	}
+	
+	for (int i = 1; i <= n; i++) {
+		cout << div[i] << endl;
+	}
+}
+
+// Sieve of Eratosthenes
+
+void sieve(int n) {
+	vector<int> prime(n+1, 1);
+	for (int i = 1; i <= n; i++) {
+		if (prime[i] != 1) continue;
+		for  (int j = i * i; j <= n; j += i) {
+			prime[j] = 0;
+		}
+	}
+}
+
+// Lienear Sieve
+
+int N = 10000000;
+vector<int> lp(N+1);
+vector<int> pr;
+
+for (int i = 2; i <= N; i++) {
+	if (lp[i] == 0) {
+		lp[i] = i;
+		pr.push_back(i);
+	}
+	
+	for(int j = 0; j < pr.size() && lp[j] <= lp[i] && i * pr[j] <= N; j++) {
+		lp[i * pr[j]] = pr[j];
+	}
+}
+
+// GCD
+
+// log (max(a, b))
+int gcd(int a, int b) {
+	if (a == 0) return b;
+	return gcd(b%a, a);
+}
+
+// Binary Exponentiation
+
+int pw(int a, int b) {
+    if (b == 0) return 1;
+    if (b % 2) {
+        int res = pw(a, (b - 1) / 2);
+        return res * res * a;
+    } else {
+        int res = pw(a, b / 2);
+        return res * res;
+    }
+}
+
+// With Modulo
+
+// binpow
+// log (b)
+int pw(int a, int b, int m) {
+	if (b==0) return 1;
+	if (b%2==0) {
+		int t = pw(a, b / 2, m);
+		return (1ll * t * t) % m;
+	} else {
+		int t = pw(a, (b-1) / 2, m);
+		t = (1ll * t * t) % m;
+		return (1ll * t * a) % m;
+	}
+}
+// Or,
+
+long long int binaryPower(int a, int b, int m) {
+	if (b == 0) return 1;
+	if (b % 2 == 0) {
+		long long int val = binaryPower(a, b / 2, m);
+		return (1ll * val * val) % m;
+	} else {
+		long long int x, y;
+		x = a % m;
+		y = binaryPower(a, (b - 1), m);
+		return (1ll * x * y) % m;
+	}
+}
+
+// Division using modulo
+int res1 = (a / b) % m;
+
+a = a % m;
+
+int inv_b = pw(b,m-2,m); // fermat's little theorem log(m)
+int res2 = a * inv_b % m;
+
+// here, res1 will equal to res2 

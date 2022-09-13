@@ -1,0 +1,708 @@
+vector<int> adj[100005];
+int vis[100005];
+
+void dfs(int node) {
+	cout << node << "  ";
+	vis[node] = 1;
+
+	for(auto ele: vis[node]) {
+		if(vis[ele] == 0)
+			dfs(ele);
+	}
+}
+
+void dfsSolve() {
+	int n, m;
+	cin >> n >> m;
+
+	for (int i = 1; i <= n; i++) {
+		int u, v;
+		cin >> u >> v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+
+	for (int i =1; i<=n;i++) {
+		if (vis[i] == 0) {
+			dfs(i);
+		}
+	}
+}
+
+void bfs(int node) {
+	vis[node] = 1;
+	queue<int> q;
+	q.push(node);
+	while (!q.empty()) {
+		int ele = q.front();
+		q.pop();
+		cout << node << "  ";
+
+		for (auto it: adj[node]) {
+			if (!vis[it]) {
+				vis[it] = 1;
+				q.push(it);
+			}
+		}
+	}
+}
+
+void bfsSolve() {
+	int n, m;
+	cin >> n >> m;
+
+	for (int i = 1; i <= n; i++) {
+		int u, v;
+		cin >> u >> v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+
+	for (int i =1; i<=n;i++) {
+		if (vis[i] == 0) {
+			bfs(i);
+		}
+	}
+
+}
+
+// minimum no. of moves to convert a given no. to given
+// target no. we can only multiply from a given array
+
+int findMinimumMoves(int start, int end, int arr[], int n) {
+	int vis[end+1];
+	vis[start] = 1;
+
+	queue<pair<int, int>> q; // 
+	q.push({start, 0})
+
+	while (!q.empty()) {
+		int node = q.front();
+		int steps = q.second();
+
+		q.pop();
+
+		if (node == end) return steps;
+
+		for (int i = 0; i < n; i++) {
+			int dest = arr[i]*node;
+			if (dest <= end && !vis[dest]) {
+			q.push({dest, steps+1});
+			vis[dest] = 1;
+			}
+		}
+	}
+	return -1;
+}
+
+// Rotten Oranges
+
+struct ds {
+	int x, y, time;
+	ds(int _x, int _y, int _time) {
+		x = _x;
+		y = _y;
+		time = _time;
+	}
+};
+class Solution {
+public:
+	//Function to find minimum time required to rot all oranges.
+	int orangesRotting(vector<vector<int>>& grid) {
+		queue<ds> q;
+		int n = grid.size();
+		int m = grid[0].size();
+
+		int cntOranges = 0;
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (grid[i][j] == 2) {
+					q.push(ds(i, j, 0));
+				}
+				if (grid[i][j] != 0) {
+					cntOranges++;
+				}
+			}
+		}
+
+		int ans = 0, count = 0;
+
+		while (!q.empty()) {
+			int x = q.front().x;
+			int y = q.front().y;
+			int time = q.front().time;
+
+			q.pop();
+			count++;
+
+			ans = max(ans, time);
+
+			int dx[] = { -1, 0, 1, 0};
+			int dy[] = {0, 1, 0, -1};
+
+			for (int i = 0; i < 4; i++) {
+				int newX = x + dx[i];
+				int newY = y + dy[i];
+
+				if (newX >= 0 && newY >= 0 && newX < n && newY < m && grid[newX][newY] == 1) {
+					grid[newX][newY] = 2;
+					q.push(ds(newX, newY, time+1));
+				}
+			}
+		}
+		if (count == cntOranges) return ans;
+		else return -1;
+	}
+};
+
+ // "The Maze" problem in which ball will roll over empty spaces(0's)
+
+ bool hasPath(vector<vector<int>> &maze, vector<int> &start, vector<int> &destination) {
+        int n = maze.size();
+        int m = maze[0].size();
+        int vis[n][m];
+        memset(vis, 0, sizeof vis);
+        vis[start[0]][start[1]] = 1;
+        queue<pair<int, int>> q;
+        q.push({start[0], start[1]});
+
+        while (!q.empty()) {
+            int x = q.front().first;
+            int y = q.front().second;
+            q.pop();
+
+            if (destination[0] == x && y == destination[1]) {
+                return true;
+            }
+
+            int dx[] = { -1, 0, 1, 0};
+            int dy[] = {0, 1, 0, -1};
+
+            for (int i = 0; i < 4; i++) {
+                int newX = x;
+                int newY = y;
+
+                while (newX >= 0 && newY >= 0 && newX < n && newY < m && maze[newX][newY] == 0) {
+                    newX += dx[i];
+                    newY += dy[i];
+                }
+                newX -= dx[i];
+                newY -= dy[i];
+                if (vis[newX][newY] == 0) {
+                    vis[newX][newY] = 1;
+                    q.push({newX,newY});
+                }
+                
+            }
+        }
+        return false;
+    }
+
+// Cycle detection in undirected graph using dfs
+
+bool vis[100001];
+
+	bool dfs(int node, int parent, vector<int> adj[]) {
+        vis[node] = true;
+        for (auto ele : adj[node]) {
+            if (!vis[ele]) {
+                if (dfs(ele, node, adj))
+                    return true;
+            } else if (vis[ele] == true && ele != parent) {
+                return true;
+            }
+        }
+        return false;
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        memset(vis, false, V);
+
+        for (int i = 0; i < V; i++) {
+            if (!vis[i])
+                if (dfs(i, -1, adj)) return true;
+        }
+        return false;
+    }
+
+// Cycle detection in undirected graph using bfs
+
+bool bfs(int node, vector<int> adj[]) {
+		queue<pair<int,int>> q;
+		q.push({node, -1});
+		vis[node] = 1;
+
+		while (!q.empty()) {
+			int cur = q.front().first;
+			int parent = q.front().second;
+			q.pop();
+
+			for (auto ele: adj[cur]) {
+				if (!vis[ele]) {
+					vis[ele] = true;
+					q.push({ele, cur});
+				} else if (vis[ele] == true && ele != parent) return true;
+			}
+		}
+		return false;
+	}
+
+	bool isCycle(int V, vector<int> adj[]) {
+        memset(vis, false, V);
+
+        for (int i = 0; i < V; i++) {
+            if (!vis[i])
+                if (bfs(i, adj)) return true;
+        }
+        return false;
+    }
+
+// Cycle detection in directed graph
+
+bool vis[100001], visPath[100001];
+bool dfs(int node, vector<int> adj[]) {
+
+        vis[node] = true;
+        visPath[node] = true;
+
+        for (auto ele: adj[node]) {
+            if (!vis[ele]) {
+                if (dfs(ele, adj)) return true;
+                vis[ele] = true;
+            } else if (vis[ele] && visPath[ele]) return true;
+        }
+
+        visPath[node] = false;
+        return false;
+    }
+    bool isCyclic(int V, vector<int> adj[]) {
+        memset(vis, false, V);
+        memset(visPath, false, V);
+
+        for (int i = 0; i < V; i++) {
+            if (!vis[i])
+                if (dfs(i, adj)) return true;
+        }
+        return false;
+    }
+
+// Bipartite Graph coloring
+
+int color[100001];
+bool dfs(int node, int curColor, vector<int> adj[]) {
+		color[node] = curColor;
+
+		for (auto ele : adj[node]) {
+			if (color[ele] == 0) {
+				if (!dfs(ele, 3 - curColor, adj)) return false;
+			}
+			if (color[ele] == color[node]) return false;
+		}
+		return true;
+	}
+	bool isBipartite(int V, vector<int>adj[]) {
+		memset(color, 0, V);
+
+		for (int i = 0; i < V; i++) {
+			if (color[i] == 0)
+				if (!dfs(i, 1, adj)) return false;
+		}
+		return true;
+	}
+
+// Topological Sorting
+void dfs(int node, stack<int> &st, vector<int> adj[]) {
+        vis[node] = true;
+        for (auto ele : adj[node]) {
+            if (!vis[ele]) dfs(ele, st, adj);
+        }
+        st.push(node);
+    }
+    vector<int> topoSort(int V, vector<int> adj[])
+    {
+        memset(vis, false, V);
+        stack<int> st;
+
+        for (int i = 0; i < V; i++) {
+            if (!vis[i]) {
+                dfs(i, st, adj);
+            }
+        }
+        vector<int> res;
+        while (!st.empty()) {
+            res.push_back(st.top());
+            st.pop();
+        }
+        return res;
+    }
+
+// Shortest Path in a Binary Weight Graph (DAG)
+
+void bfsZeroOne(int source) {
+	deque<pair<int, int>> dq; // storing <node,distance>
+	dq.push_front({source, 0});
+	vector<int> dist(n, INT_MAX);
+	
+	while (!dq.empty()) {
+		int node = dq.front().first;
+		int dt = dq.front().second;
+
+		dq.pop_front();
+
+		for (auto ele: adj[node]) {
+			int adjNode = ele.first;
+			int adjdt = ele.second;
+			if (dt + adjdt < adj[adjNode]) {
+				adj[adjNode] = dt + adjdt;
+				if (adjdt == 1) {
+					dq.push_back({adjNode, dt + adjdt});
+				} else {
+					dq.push_front({adjNode, dt})
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		cout << dist[i] << "  ";
+	}
+}
+
+// Shortest Path Multi Weight (Graph dijkstra Algorithm for DAG multiple weigth i.e
+// other than 0 or 1 like in previous explanation) 
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int source)
+    {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push({0, source}); // <distance, node>
+
+        vector<int> dist(V, INT_MAX);
+        dist[source] = 0;
+
+        while (!pq.empty()) {
+            int node = pq.top().second;
+            int dt = pq.top().first;
+            pq.pop();
+
+            for (auto ele : adj[node]) {
+                int adjNode = ele[0];
+                int adjdt = ele[1];
+                cout << adjdt << "  " << adjNode << "  " << dt << "  " << node << endl;
+                if (adjdt + dt < dist[adjNode]) {
+                    dist[node] = adjdt + dt;
+                    pq.push({adjdt + dt, adjNode});
+                }
+            }
+        }
+        return dist;
+    }
+
+// Print Shortest Path 
+
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int source) {
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	pq.push({0, source}); //(<distance, node>)
+	vector<int> dist(V, INT_MAX), parent(V, -1);
+	dist[source] = 0;
+	parent[0] = 0;
+	while (!pq.empty()) {
+		int node = pq.top().second;
+		int dt = pq.top().first;
+		pq.pop();
+		for (auto ele: adj[node]) {
+			int adjNode = ele[0];
+			int adjDt = ele[1];
+			if (dt + adjDt < adj[adjNode]) {
+				adj[adjNode] = dt + adjDt;
+				parent[adjNode] = node;
+				pq.push({dt + adjDt, adjNode});
+			}
+		}
+	}
+
+	int x = n-1;
+
+	cout << x << "  ";
+	while (parent[x] != 0) {
+		x = parent[x];
+		cout << x << "  ";
+	}
+}
+
+// Shortest distance if ball in a maze(The Maze II Leetcode) 
+
+int shortestDistance(vector<vector<int>> &maze, vector<vector<int>> &start, vector<vector<int>> &destination) {
+	priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>> pq;
+	int n = maze.size();
+	int m = maze[0].size();
+	vector<int> dist(n * m + 1, INT_MAX);
+	pq.push({0, {destination[0], destination[1]}});
+	dist[start[0]*m + star[1]] = 0;
+
+	int dx[] = {-1, 1, 0, 0};
+	int dy[] = {0, 0, -1, 1};
+
+	while (!pq.empty()) {
+		int dt = dt.top().first;
+		int x = dt.top().second.first;
+		int y = dt.top().second.second;
+		pq.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int newX = x;
+			int newY = y;
+			int count = 0;
+
+			while (newX >= 0 && newY >= 0 && newX < n && newY < m) {
+				newX += dx[i];
+				newY += dy[i];
+				count++;
+			}
+			newX -= dx[i];
+			newY -= dy[i];
+			count--;
+
+			if (dt + count < dist[newX*m + newY]) {
+				dist[newX*m + newY] = dt + count;
+				pq.push({dt+count, {newX, newY}});
+			}
+		}
+	}
+	if (dist[destination[0]*m + destination[1]] == INT_MAX) {
+		return -1;
+	}
+	return dist[destination[0]*m + destination[1]];
+}
+
+// Count no. of Shortest path 
+
+int countPaths(int n, vector<vector<int>>& roads) {
+         long long mod = (1e9 + 7); 
+         vector<long long> ways(n, 0); 
+         long long maxi = 1e18; 
+         vector<long long> dist(n, maxi); 
+ 
+         dist[0] =0; 
+         ways[0] =1;
+ 
+        vector<pair<long long,long long>> adj[n]; 
+        for(auto it : roads) {
+            adj[it[0]].push_back({it[1], it[2]}); 
+            adj[it[1]].push_back({it[0], it[2]}); 
+        }
+ 
+         priority_queue<pair<long long,long long>, vector<pair<long long,long long>>, greater<pair<long long,long long>>> pq;
+        pq.push({0, 0}); 
+        while(!pq.empty()) {
+            long long node = pq.top().second;
+            long long dis = pq.top().first; 
+            pq.pop(); 
+ 
+            for(auto it : adj[node]) {
+                long long wt = it.second; 
+                long long adjNode = it.first; 
+                if(wt + dis < dist[adjNode]) {
+                    dist[adjNode] = wt + dis; 
+                    ways[adjNode] = ways[node]; 
+                    pq.push({dist[adjNode], adjNode}); 
+                }
+                else if(wt + dis == dist[adjNode]) {
+                    ways[adjNode] = (ways[adjNode] + ways[node]) % mod; 
+                }
+            }
+        }
+        return ways[n-1]; 
+    }
+
+ // Find the number of Islands (Using Disjoint Set)
+
+class DSU {
+private:
+    vector<int> parent, size;
+public:
+    DSU(int n) {
+        for (int i = 0; i < n; i++) {
+            parent.push_back(i);
+            size.push_back(1);
+        }
+    }
+
+    int findParent(int node) {
+        if (parent[node] == node) return node;
+
+        return parent[node] = findParent(parent[node]);
+    }
+
+    void unionSize(int u, int v) {
+        int pu = findParent(u);
+        int pv = findParent(v);
+
+        if (pu == pv) return;
+
+        if (size[pu] < size[pv]) {
+            parent[pu] = pv;
+            size[pv] += size[pu];
+        } else {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+        }
+    }
+};
+
+class Solution {
+public:
+    // Function to find the number of islands.
+    int numIslands(vector<vector<char>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        DSU dsu(n * m + 1);
+        int count = 0;
+        int dx[] = {1, -1, 0, 0, 1, 1, -1, -1};
+        int dy[] = {0, 0, -1, 1, 1, -1, -1, 1};
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '0') continue;
+
+                int ind1 = i * m + j;
+
+                count++;
+                for (int k = 0; k < 8; k++) {
+                    int newX = i + dx[k];
+                    int newY = j + dy[k];
+
+                    // cout << newX << "  " << newY << endl;
+
+                    int ind2 = newX * m + newY;
+
+                    if (newX >= 0 && newY >= 0 && newX < n && newY < m && grid[newX][newY] == '1'
+                            && dsu.findParent(ind1) != dsu.findParent(ind2)) {
+                        count--;
+                        dsu.Union(ind1, ind2);
+                    }
+                }
+                // for (auto ele : dsu.parent) cout << ele << "  ";
+            }
+        }
+        return count;
+    }
+};
+
+// Kruksal Algorithm for Minimum Spanning Tree
+
+struct node {
+	int u, v, wt;
+
+	node(int _u, int _v, int _wt) {
+		u = _u;
+		v = _v;
+		wt = _wt;
+	}
+};
+
+bool comp(node a, node b) {
+	if (a.wt < b.wt) return true;
+	return false;
+}
+
+void kruksal(int n, vector<node> &edges) {
+	sort(edges.begin(), edges.end(), comp);
+
+	DSU dsu(n);
+	for (auto it: edges) {
+		int u = it.u;
+		int v = it.v;
+		int wt = it.wt;
+		if (dsu.findParent(u) != dsu.findParent(v)) {
+			dsu.unionSize(u, v);
+			cost += wt;
+		}
+	}
+	cout << cost << endl;
+}
+
+// Prims Algorithm for Minimum Spanning Tree
+
+int minKey(vector<int> &key, vector<bool> &mstSET) {
+    int mini = INT_MAX, ind;
+    for (int i = 0; i < key.size(); i++) {
+        if (mstSET[i] == false && key[i] < mini)
+            mini = key[i], ind = i;
+    }
+    return ind;
+}
+void printMST(vector<int> &parent, vector<vector<int>> &graph) {
+    for (int i = 1; i < parent.size(); i++) {
+        cout << parent[i] << " - " << i << "  ->  " << graph[i][parent[i]] << endl;
+    }
+}
+void primMST(vector<vector<int>> &graph) {
+    int V = graph.size();
+    vector<int> parent(V), key(V, INT_MAX);
+    vector<bool> mstSET(V, false);
+    parent[0] = -1;
+    key[0] = 0;
+    for (int count = 0; count < V - 1; count++) {
+
+        int u = minKey(key, mstSET);
+        mstSET[u] = true;
+        for (int v = 0; v < V; v++) {
+            if (graph[u][v] && mstSET[v] == false && graph[u][v] < key[v])
+                parent[v] = u, key[v] = graph[u][v];
+        }
+    }
+
+    printMST(parent, graph);
+}
+
+// Bridges and graph
+
+int tin[100001], low[100001];
+int timer = 0;
+
+int vis[100001];
+void dfs(int node, int par) {
+	tin[node] = low[node] = timer++;
+	vis[node] = 1;
+	for (auto adjNode: adj[node]) {
+		if (adjNode == par) continue;
+		if (!vis[adjNode]) {
+			dfs(adfNode, node);
+			low[node] = min(low[node], low[adjNode]);
+			if (low[adjNode] > tin[adjNode]) cout << cout << adjNode << "->" << node << endl;
+		} else {
+			low[node] = min(low[node], low[adjNode]);
+		}
+	}
+}
+
+// Shortest path Bellman Ford Algorithm to find negative cycle == O(n2)
+
+void bellmanFord(int n, vector<notde> &edges) {
+	vector<int> dist(n, INT_MAX);
+	dist[0] = 0;
+	for (int i = 0; i < n - 1; i++) {
+		for (auto ele: edges) {
+			int u = ele.u;
+			int v = ele.v;
+			int wt = ele.wt;
+			if (dist[u] != INT_MAX && dist[u] + wt < dist[v]) {
+				dist[v] = dist[u] + wt;
+			}
+		}
+	}
+
+	for (auto ele: edges) {
+			int u = ele.u;
+			int v = ele.v;
+			int wt = ele.wt;
+			if (dist[u] != INT_MAX && dist[u] + wt < dist[v]) {
+				dist[v] = dist[u] + wt;
+				cout << "cycle exists";
+				return;
+			}
+		}
+	for (auto ele: edges) cout << ele << endl;
+}
+
+
+// for all of code visit https://ideone.com/bzs32y

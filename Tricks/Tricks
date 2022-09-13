@@ -1,0 +1,65 @@
+convert 2d array into 1d array
+// Row wise storage
+for (i = 0; i < n; ++i) {
+	for (j = 0; j < m; ++j) {
+		arr1D[i * m + j] = arr2D[i][j];
+	}
+}
+// for display
+for (i = 0; i < n * m; ++i) {
+	cout << arr1D[i] << " ";
+}
+
+// Coloumn wise storage
+for (j = 0; j < m; ++j) {
+	for (i = 0; i < n; ++i) {
+		arr1D[j * n + i] = arr2D[i][j];
+	}
+}
+// for display
+for (i = 0; i < n * m; ++i) {
+	cout << arr1D[i]) << " ";
+}
+
+// Rotate an array k times
+rotate(a.begin(), k + all(a));
+
+// Negative mod
+int mod(int a, int b) {
+	return (a%b + b)%b;
+}
+
+// Rotate Matrix by 90
+void rotateMatrix(vector<string> &mat, int N) // int mat[][N]
+{
+	// Consider all squares one by one
+	for (int x = 0; x < N / 2; x++) {
+		// Consider elements in group
+		// of 4 in current square
+		for (int y = x; y < N - x - 1; y++) {
+			// Store current cell in
+			// temp variable
+			int temp = mat[x][y];
+
+			// Move values from right to top
+			mat[x][y] = mat[y][N - 1 - x];
+
+			// Move values from bottom to right
+			mat[y][N - 1 - x] = mat[N - 1 - x][N - 1 - y];
+
+			// Move values from left to bottom
+			mat[N - 1 - x][N - 1 - y] = mat[N - 1 - y][x];
+
+			// Assign temp to left
+			mat[N - 1 - y][x] = temp;
+		}
+	}
+}
+
+// Use of iota for storing values like 0 1 2 3 4 ...
+iota(parent.begin(), parent.end(), 0); // parent -> vector
+
+// To check number power of two
+bool isPowerofTwo(long long n) {
+	return (n != 0) && ((n & (n - 1)) == 0);
+}
