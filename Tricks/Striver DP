@@ -11,3 +11,1973 @@
 3 > Sum of all Stuffs -> count all ways
 Or,
 3 >	min (of all stuffs) -> find min
+
+// Fibonacci DP (Memoization)
+
+vector<int> dp(n+1, -1);
+int f(int n, vector<int> &dp) {
+	if (n <= 1) return n;
+	if (dp[n] != -1) return dp[n];
+	
+	return dp[n] = f(n-1, dp) + f(n-2, dp);
+}
+
+// Fibonacci DP (Tabulation)
+
+vector<int> dp(n+1);
+dp[0] = 0, dp[1] = 1;
+for (int i = 2; i <= n; i++) {
+	dp[i] = dp[i-1] + dp[i-2];
+}
+cout << dp[n] << endl;
+
+// Fibonacci DP (final Soln removing space)
+
+int prev2 = 0, prev1 = 1;
+for (int i = 2; i <= n; i++) {
+	int cur = prev1 + prev2;
+	prev2 = prev1;
+	prev1 = cur;
+}
+cout << prev1 << endl;
+
+// Understand DP problem
+// 1. Count no. of ways
+// 2. Min or Max of ways
+
+// one step or two step, find no. of distinct ways to reach nth stair
+// Count Ways To Reach The N-th Stairs
+
+// Same as Fibonacci
+
+int f (ind) {
+	if (ind == 1) return 1;
+	if (ind == 0) return 1;
+	left = f(ind-1);
+	right = f(ind-2);
+	return left + right;
+}
+
+// Frog Jump
+// frog wants to reach nth stair with minimum 
+// enery (absolute of height difference)
+
+int f (int ind, vector<int> &height) {
+	if (ind == 0) return 0;
+	
+	int left = f(ind-1, height) + abs(height[ind] - height[ind-1]);
+	int right = INT_MAX;
+	if (ind > 1) right = f(ind-2, height) + abs(height[ind] = height[ind-2]);
+	return min(left, right);
+}
+// for calling function {return f(n-1, height);}
+
+// Converting recursion to dp (memoization)
+// look at the changing parameters
+
+int f (int ind, vector<int> &height, vector<int> &dp) {
+	if (ind == 0) return 0;
+	if (dp[ind] != -1) return dp[ind];
+	
+	int left = f(ind-1, height) + abs(height[ind] - height[ind-1]);
+	int right = INT_MAX;
+	if (ind > 1) right = f(ind-2, height) + abs(height[ind] = height[ind-2]);
+	return dp[ind] = min(left, right);
+}
+
+// Converting it to tabulation
+
+vector<int> dp(n);
+dp[0] = 0;
+for (int i = 1; i < n; i++) {
+	int fs = dp[i-1] + abs(height[i-1]-height[i]);
+	int ss = INT_MAX;
+	if (i > 1) ss = dp[i-2] + abs(height[i-2]-height[i]);
+	dp[i] = min(fs, ss);
+}
+cout << dp[n-1] << endl;
+
+// Space Optimization
+
+prev = 0, prev2 = 0, cur;
+for (int i = 1; i < n; i++) {
+	int fs = prev + abs(height[i-1]-height[i]);
+	int ss = INT_MAX;
+	if (i > 1) ss = prev2 + abs(height[i-2]-height[i]);
+	cur = min(fs, ss);
+	prev2 = prev;
+	prev = cur;
+}
+cout << prev << endl;
+
+// Frog Jump 2.0
+// Now frog can jum k Moves
+
+// Direct Tabulation(my)
+
+vector<int> dp(n, INT_MAX);
+dp[0] = 0;
+for (int i = 1; i < n; i++) {
+  for (int j = 1; j <= k; j++) {
+    if ((i - j) >= 0) {
+      int fs = dp[i - j] + abs(height[i - j] - height[i]);
+      dp[i] = min(dp[i], fs);
+    }
+  }
+}
+cout << dp[n - 1] << endl;
+
+// Maximum sum of non-adjacent elements
+
+int f(int ind) {
+	if (ind == 0) return arr[ind];
+	if (ind < 0) return 0;
+	int pick = arr[ind] + f(ind-2);
+	int notpick = f(ind-1);
+	return max(pick, notpick);
+}
+
+// Appying Memoizatoin
+
+int f(int ind) {
+	if (int == 0) return arr[ind];
+	if (ind < 0) return 0;
+	if (dp[ind] != -1) return dp[ind];
+	int pick = arr[ind] + f(ind-2);
+	int notpick = f(ind-1);
+	return dp[ind] = max(pick, notpick);
+}
+
+// Now Tabulation
+
+dp[0] = arr[0];
+for (int i = 1; i < n; i++) {
+	pick = arr[i];
+	if (i > 1) pick += dp[ind-2];
+	notpick = dp(ind-1);
+	dp[i] = max(pick, notpick);
+}
+cout << dp[n] << endl;
+
+// Space optimization
+
+int prev2 = 0, prev = arr[0];
+for (int i = 1; i < n; i++) {
+	int pick = arr[i] + prev2;
+	int notpick = prev;
+	int cur = max(pick, notpick);
+	prev2 = prev;
+	prev = cur;
+}
+
+// House Robber
+// same as previous just array is circular
+// Just slight modification to last solution it will solve the question
+// we solve this two time one for ans1 leaving first element and seconed for ans2
+// leaving last element maximum of both them will be our answer
+
+if (n==1) return arr[0];
+int prev2 = 0, prev = arr[1];
+for (int i = 2; i < n; i++) {
+	int pick = arr[i] + prev2;
+	int notpick = prev;
+	int cur = max(pick, notpick);
+	prev2 = prev;
+	prev = cur;
+}
+int ans1 = prev;
+prev2 = 0, prev = arr[0];
+for (int i = 1; i < (n-1); i++) {
+	int pick = arr[i] + prev2;
+	int notpick = prev;
+	int cur = max(pick, notpick);
+	prev2 = prev;
+	prev = cur;
+}
+int ans2 = prev;
+cout << max(ans1, ans2) << endl;
+
+// Ninja's Training
+// days have same columns(m) of excersice which cannot be performed two
+// continuous days
+
+we start by calling f(n-1, 3); // here 3 is important
+f(day, last) {
+	if (day == 0) {
+		maxi = 0;
+		for (int i = 0 -> m) if (i != last) maxi = max(maxi, points[day][i]);
+		return maxi;
+	}
+	maxi = 0;
+	for (int i = 0 -> m-1) {
+		if (i != last) {
+			point = points[day][i] + f(day-1, i);
+			maxi = max(maxi, point);
+		}
+	}
+	return maxi;
+}
+
+// Memization
+
+vector<vector<int>> dp(n, vector<int>(m+1, -1));
+start by calling f(n-1, m, points, dp);
+int f(int day, int last, vector<vector<int>> &points, vector<vector<int>> &dp) {
+	if (day == 0) {
+		int maxi = 0;
+		for (int i = 0; i <= m; i++) if (i != last)	maxi = max(maxi, points[day][i]);
+		return maxi;
+	}
+	if (dp[day][last] != -1) return dp[day][last];
+	int maxi = 0;
+	for (int i = 0; i < m; i++) {
+		if (i != last) {
+			maxi = max(maxi, points[day][i] + f(day-1, i, points, dp));
+		}
+	}
+	return dp[day][last] = maxi;
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(m+1));
+for (int i = 0; i <= m; i++) {
+	int maxi = 0;
+	for (int j = 0; j < m; j++) {
+		if (j != i)
+			maxi = max(maxi, points[0][j]);
+	}
+	dp[0][i] = maxi;
+}
+for (int day = 1; day < n; day++) {
+	for (int last = 0; last <= m; last++) {
+		dp[day][last] = 0;
+		for (int task = 0; task < m; task++) {
+			if (task != last) {
+				dp[day][last] = max(dp[day][last], points[day][task] + dp[day-1][task]);
+			}
+		}
+	}
+}
+cout << dp[n-1][m] << endl;
+
+// Space Optimization
+
+vector<int> prev(m+1, 0);
+for (int i = 0; i <= m; i++) {
+	for (int j = 0; j < m; j++) {
+		if (i != j) prev[i] = max(prev[i], points[0][j]);
+	}
+}
+for (int day = 1; day < n; day++) {
+	vector<int> temp(m+1, 0);
+	for (int last = 0; last <= m; last++) {
+		for (int task = 0; task < m; task++) {
+			if (task != last) {
+				temp[last] = max(temp[last], points[day][task] + prev[task]);
+			}
+		}
+	}
+	prev = temp;
+}
+cout << prev[m] << endl;
+
+// Grid Unique Paths (N x M)
+// Only allowed to move right or down
+
+start by calling f(n-1, m-1)
+f(i, j) {
+  if (i == 0 && j == 0) return 1;
+  if (i < 0 || j < 0) return 0;
+
+  left = f(i, j - 1);
+  up = f(i - 1, j);
+  return left + up;
+}
+
+// Memoization
+
+int dp[n][m];
+int f(int i, int j) {
+  if (i == 0 && j == 0) return 1;
+  if (i < 0 || j < 0) return 0;
+  if (dp[i][j] != 0) return dp[i][j];
+  int left = f(i, j - 1);
+  int up = f(i - 1, j);
+  return dp[i][j] = left + up;
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(m, 0));
+dp[0][0] = 1;
+for (int i = 0; i < n; i++) {
+	for (int j = 0; j < m; j++) {
+		if (j > 0) dp[i][j] += dp[i][j-1];
+		if (i > 0) dp[i][j] += dp[i-1][j];
+	}
+}
+cout << dp[n-1][m-1] << endl;
+
+// Space optimization
+vector<int> dp(m, 0);
+dp[0] = 1;
+for (int i = 0; i < n; i++) {
+	vector<int> temp(m, 0);
+	for (int j = 0; j < m; j++) {
+		if (j > 0) temp[j] += temp[j-1];
+		temp[j] += dp[j];
+	}
+	dp = temp;
+}
+cout << dp[m-1] << endl;
+
+// Special solution for google interview
+// two observation
+// 1. to reach end we have to move n-1 right and m-1 down(total = n + m - 2 moves)
+// 2. we can choose ((n+m-2) C n-1 ) + ((n+m-2) C m-1 ) so its combinatorics
+
+int uniquePaths(int n, int m) {
+	int N = n + m - 2;
+	int r = n - 1;
+	double res = 1;
+	for (int i = 1; i <= r; i++) {
+		res *= (N-r+i)/i;
+	}
+	return res;
+}
+
+// Maze Obstacle
+// grid with either 0 or -1, you cannot go from cell with -1 count Unique Paths
+
+start by calling f(n-1, m-1)
+f(i, j) {
+  if (i == 0 && j == 0) return 1;
+  if (i < 0 || j < 0) return 0;
+  if (grid[i][j] == -1) return 0;
+  left = f(i, j - 1);
+  up = f(i - 1, j);
+  return left + up;
+}
+
+// Every else can be applied just like previous question
+// Space optimized solutoin(final)
+
+vector<int> dp(m, 0);
+dp[0] = 1;
+for (int i = 0; i < n; i++) {
+    vector<int> temp(m, 0);
+    for (int j = 0; j < m; j++) {
+        if (mat[i][j] == -1) temp[j] = 0;
+        else if (i == 0 && j == 0) temp[j] = 1;
+        else {
+            if (j > 0) temp[j] += (temp[j-1] % mod);
+            temp[j] += (dp[j]  % mod);
+        }
+    }
+    dp = temp;
+}
+return dp[m-1]%mod;
+
+// Minimum Path Sum in Grid
+
+f(i, j) {
+	if (i == 0 && j == 0) return grid[0][0];
+	if (i < 0 || j < 0) return INT_MAX;
+	left = a[i][j] + f(i, j - 1);
+  	up = a[i][j] + f(i - 1, j);
+  	return min(left, up);
+}
+
+// Memoization can be done like earlier
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(m, INT_MAX));
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      if (i == 0 && j == 0) dp[i][j] = grid[0][0];
+      else {
+      	if (i > 0) dp[i][j] = grid[i][j] + dp[i-1][j];
+      	if (j > 0) dp[i][j] = min(dp[i][j], grid[i][j] + dp[i][j-1]);
+      }
+    }
+}
+cout << dp[n-1][m-1] << endl;
+
+// Space optimization
+
+vector<int> dp(m, INT_MAX);
+dp[0] = grid[0][0];
+for (int i = 0; i < n; i++) {
+    vector<int> temp(m, INT_MAX);
+    for (int j = 0; j < m; j++) {
+        if (i == 0 && j == 0) temp[j] = grid[0][0];
+    	else {
+        	if (i > 0) temp[j] = grid[i][j] + dp[j];
+        	if (j > 0) temp[j] = min(temp[j], grid[i][j] + temp[j-1]);
+    	}
+    }
+    dp = temp;
+}
+cout << dp[m-1] << endl;
+
+// Triangle
+// Given Triangular array, find minimum path sum from top to bottom row
+
+start by calling  	for (int i = 0; i < n; i++)
+        							ans = min(ans, f(n-1, i, triangle));
+f(i, j, &triangle) {
+	if (i < 0 || j < 0) return 1e9;
+	if (i == 0 && j == 0) return triangle[0][0];
+	if (j > i) return 1e9;
+	up = triangle[i][j] + f(i-1, j);
+	diag = triangle[i][j] + f(i-1, j-1);
+	return min(up, diag);
+}
+
+// Memoization
+
+vector<vector<int>> dp(n, vector<int>(n, -1));
+start by calling  	for (int i = 0; i < n; i++)
+        							ans = min(ans, f(n-1, i, triangle, dp));
+int f(int i, int j, vector<vector<int>> &triangle, vector<vector<int>> &dp) {
+    if (i < 0 || j < 0) return 1e9;
+    if (i == 0 && j == 0) return triangle[0][0];
+    if (j > i) return 1e9;
+    if (dp[i][j] != -1) return dp[i][j];
+    int up = triangle[i][j] + f(i-1, j, triangle, dp);
+    int diag = triangle[i][j] + f(i-1, j-1, triangle, dp);
+    return dp[i][j] = min(up, diag);
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(n, 1e9));
+dp[0][0] = triangle[0][0];
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j <= i; j++) {
+        if (i == 0 && j == 0) continue;
+        int up = 1e9;
+        if (i > 0) up = dp[i-1][j];
+        int diag = 1e9;
+        if (i > 0 && j > 0) diag = dp[i-1][j-1];
+        dp[i][j] = triangle[i][j] + min(up, diag);
+    }
+}
+cout << *min_element(dp[n-1].begin(), dp[n-1].end()) << endl;
+
+// Space Optimizatoin
+
+vector<int> dp(n, 1e9), cur(n, 1e9);
+dp[0] = cur[0] = triangle[0][0];
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= i; j++) {
+        int up = 1e9;
+        if (i > 0) up = dp[j];
+        int diag = 1e9;
+        if (i > 0 && j > 0) diag = dp[j-1];
+        cur[j] = triangle[i][j] + min(up, diag);
+    }
+    dp = cur;
+}
+cout << *min_element(cur.begin(), cur.end()) << endl;
+
+// Maximum Path Sum in the matrix with variable staring and ending point
+// with Matrix N*M
+
+start by calling 			int ans = INT_MIN;
+    									for (int j = 0; j < m; j++)
+        									ans = max(ans, f(0, j, n-1, m-1, matrix));
+f(i, j, n, m) {
+    if (i < 0 || j < 0 || i > n || j > m) return INT_MIN;
+    if (i == n) return matrix[i][j];
+    down = f(i+1, j, n, m);
+    diagL = f(i+1, j-1, n, m);
+    diagR = f(i+1, j+1, n, m);
+    return matrix[i][j] + max({down, diagL, diagR});
+}
+
+// Memoization
+can be done easily so skipping it
+
+// Tabulation
+
+int n = matrix.size(), m = matrix[0].size();
+vector<vector<int>> dp(n, vector<int>(m, 0));
+for (int i = n-1; i >= 0; i--) {
+    for (int j = 0; j < m; j++) {
+        if (i == (n-1)) {
+            dp[i][j] = matrix[i][j];
+            continue;
+        }
+        int down = dp[i+1][j];
+        int diagL = INT_MIN;
+        if (j > 0) diagL = dp[i+1][j-1];
+        int diagR = INT_MIN;
+        if (j < (m-1)) diagR = dp[i+1][j+1];
+        dp[i][j] = matrix[i][j] + max({down, diagL, diagR});
+    }
+}
+return *max_element(dp[0].begin(), dp[0].end());
+
+// Space optimization
+
+vector<int> dp = matrix[n-1], cur(m);
+for (int i = (n-2); i >= 0; i--) {
+	for (int j = 0; j < m; j++) {
+		int down = dp[j];
+		int diagL = INT_MIN;
+		if (j > 0) diagL = dp[j-1];
+    int diagR = INT_MIN;
+    if (j < (m-1)) diagR = dp[j+1];
+    cur[j] = matrix[i][j] + max({down, diagL, diagR});
+	}
+	dp = cur;
+}
+return *max_element(dp.begin(), dp.end()); // Remember to use here "dp"
+																		// not "cur" for single element case
+																		
+// Chocolate Pickup ***3D DP !important
+// alice and bob wants to collect max chocolates in same grid (n*m)
+
+f(i1, j1, i2, j2) {
+	if (i1 < 0 || j1 < 0 || j2 < 0 || i1 >= n || j1 >= m || j2 >= m) return -1e9;
+	// if (j1 == j2) return grid[i1][j1]; <- This might give correct ans for +ive 
+												//ele matrix but its wrong
+											// as it doesn't fit into function "f" 
+											// definatoin when returning value. 
+	if (i1 == (n-1) || i2 == (n-1)) return grid[i1][j1] + grid[i2][j2];
+	if (i1 == (n-1)) {
+        if (j1 == j2) return grid[i1][j1];
+        else return grid[i1][j1] + grid[i1][j2];
+    }
+	int res = 0;
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			int val = 0;
+			if (j1 == j2) val += grid[i1][j1];
+			else val += grid[i1][j1] + grid[i1][j2];
+			val += f(i1+1, j1+i, j2+j);
+			res = max(res, val);
+		}
+	}
+	return res;
+}
+
+
+// Memoization using 3D vector/array
+
+start by calling 	vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, -1)));
+    							return f(0, 0, m-1, n, m, matrix, dp);
+int f(int i1, int j1, int j2, int &n, int &m, 
+      vector<vector<int>> &grid, vector<vector<vector<int>>> &dp) {
+    if (i1 < 0 || j1 < 0 || j2 < 0 || i1 >= n || j1 >= m || j2 >= m) return -1e9;
+    if (i1 == (n-1)) {
+        if (j1 == j2) return grid[i1][j1];
+        else return grid[i1][j1] + grid[i1][j2];
+    }
+    if (dp[i1][j1][j2] != -1) return dp[i1][j1][j2];
+    int res = -1e9;
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            int val = 0;
+            if (j1 == j2) val += grid[i1][j1];
+            else val += grid[i1][j1] + grid[i1][j2];
+            val += f(i1+1, j1+i, j2+j, n, m, grid, dp);
+            res = max(res, val);
+        }
+    }
+    return dp[i1][j1][j2] = res;
+}
+
+// Tabulation
+
+vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, 0)));
+for (int j1 = 0; j1 < m; j1++) {
+    for (int j2 = 0; j2 < m; j2++) {
+        if (j1 == j2) dp[n-1][j1][j2] = grid[n-1][j1];
+        else dp[n-1][j1][j2] = grid[n-1][j1] + grid[n-1][j2];
+    }
+}
+    int ans = 0;
+for (int i = n-2; i >= 0; i--) {
+    for (int j1 = 0; j1 < m; j1++) {
+        for (int j2 = 0; j2 < m; j2++) {
+            int res = -1e9;
+            for (int ad1 = -1; ad1 <= 1; ad1++) {
+                for (int ad2 = -1; ad2 <= 1; ad2++) {
+                    if ((j1+ad1) < 0 || (j1+ad1) >= m || (j2+ad2) < 0 || (j2+ad2) >= m) continue;
+                    int val = 0;
+                    if (j1 == j2) val += grid[i][j1];
+                    else val += grid[i][j1] + grid[i][j2];
+                    val += dp[i+1][j1+ad1][j2+ad2];
+                    res = max(res, val);
+                }
+            }
+            dp[i][j1][j2] = res;
+        }
+    }
+}
+return dp[0][0][m-1];
+
+// Space Optimization
+
+vector<vector<int>> dp(m, vector<int>(m, 0)), cur(m, vector<int>(m, 0));
+for (int j1 = 0; j1 < m; j1++) {
+    for (int j2 = 0; j2 < m; j2++) {
+        if (j1 == j2) dp[j1][j2] = grid[n-1][j1];
+        else dp[j1][j2] = grid[n-1][j1] + grid[n-1][j2];
+    }
+}
+    int ans = 0;
+for (int i = n-2; i >= 0; i--) {
+    for (int j1 = 0; j1 < m; j1++) {
+        for (int j2 = 0; j2 < m; j2++) {
+            int res = -1e9;
+            for (int ad1 = -1; ad1 <= 1; ad1++) {
+                for (int ad2 = -1; ad2 <= 1; ad2++) {
+                    if ((j1+ad1) < 0 || (j1+ad1) >= m || (j2+ad2) < 0 || (j2+ad2) >= m) continue;
+                    int val = 0;
+                    if (j1 == j2) val += grid[i][j1];
+                    else val += grid[i][j1] + grid[i][j2];
+                    val += dp[j1+ad1][j2+ad2];
+                    res = max(res, val);
+                }
+            }
+            cur[j1][j2] = res;
+        }
+    }
+    dp = cur;
+}
+return dp[0][m-1];
+
+// Subset Sum Equal To K **new DP type
+
+start by calling  return f(0, 0);
+
+f(i, sum) {
+	if (sum > k) return false;
+	if (k == sum) return true;
+	if (i == n) return false;
+	bool pick = f(i+1, sum+arr[i]);
+	bool notpick = f(i+1, sum);
+	if (pick || notpick) return true;
+	return false;
+}
+
+// Reverse Recurrence
+
+f(i, target) {
+	if (target == 0) return true;
+	if (target < 0) return false;    --| both can be combined
+	// if (i < 0) return false;			 --| to one statement
+	if (i == 0) return target == arr[i];
+	return f(i-1, target-arr[i]) || f(i-1, target);
+}
+
+// Memoization
+
+vector<int> dp(n, -1);
+start by calling   return f(n-1, k, arr, dp);
+bool f(int i, int target, vector<int> &arr, vector<vector<int>> &dp) {
+    if (target == 0) return true;
+    if (target < 0) return false;
+    if (i < 0) return false;
+    if (dp[i][target] != -1) return dp[i][target];
+    return dp[i][target] = (f(i-1, target-arr[i], arr, dp) || f(i-1, target, arr, dp));
+}
+
+// Space optimization
+
+vector<bool> dp(k+1, false), cur(k+1, false);
+dp[0] = cur[0] = true;
+dp[arr[0]] = true;
+for (int i = 1; i < n; i++) {
+    for (int target = 1; target <= k; target++) {
+        cur[target] = dp[target];
+        if (target-arr[i] >= 0) cur[target] = dp[target] || dp[target-arr[i]];
+    }
+    dp = cur;
+}
+return dp[k];
+
+//  Partition Equal Subset Sum
+// final solution with space optimization solution similar to previous ones
+
+bool subsetSumToK(int n, int k, vector<int> &arr) {
+    vector<bool> dp(k+1, false), cur(k+1, false);
+    dp[0] = cur[0] = true;
+    dp[arr[0]] = true;
+    for (int i = 1; i < n; i++) {
+        for (int target = 1; target <= k; target++) {
+            cur[target] = dp[target];
+            if (target-arr[i] >= 0) cur[target] = dp[target] || dp[target-arr[i]];
+        }
+        dp = cur;
+    }
+    return dp[k];
+}
+bool canPartition(vector<int> &arr, int n)
+{
+	int total = 0;
+    for (auto &ele: arr) total += ele;
+    if (total & 1) return false;
+    return subsetSumToK(n, total/2, arr);
+}
+
+// Partition A Set Into Two Subsets With Minimum Absolute Sum Difference (DP-16)
+// Similar to previous solutions putting just final soln.
+
+int k = 0;
+for (auto &ele: arr) k += ele;
+vector<bool> dp(k+1, false), cur(k+1, false);
+dp[0] = cur[0] = true;
+dp[arr[0]] = true;
+for (int i = 1; i < n; i++) {
+    for (int target = 1; target <= k; target++) {
+        cur[target] = dp[target];
+        if (target-arr[i] >= 0) cur[target] = dp[target] || dp[target-arr[i]];
+    }
+    dp = cur;
+}
+int mini = INT_MAX;
+for (int i = 0; i <= k; i++) {
+    if (dp[i]) mini = min(mini, abs(i - (k - i)));
+}
+return mini;
+
+// Counts Subsets with Sum K (DP-17)**********************
+// Similar to previous ones
+
+start by calling  f(n-1, K);
+f(i, sum) {
+	if (sum == 0) return 1;
+	if (i == 0) return sum == arr[i];
+	
+	int notpick = f(i-1, sum);
+	int pick = 0;
+	if (arr[i] <= sum) pick = f(i-1, sum - arr[i]);
+	
+	return pick + notpick;
+}
+
+// Memoization can be done easily skipping it
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(tar+1, 0));
+for (int i = 0; i < n; i++) {
+    dp[i][0] = 1;
+}
+if (num[0] <= tar) dp[0][num[0]] = 1;
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= tar; j++) {
+        dp[i][j] = dp[i-1][j];
+        if (num[i] <= j) dp[i][j] += dp[i-1][j-num[i]];
+    }
+}
+return dp[n-1][tar];
+
+// Space optimization
+
+vector<int> dp(tar+1, 0), cur(tar + 1);
+dp[0] = cur[0] = 1;
+if (num[0] <= tar) dp[num[0]] = 1;
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= tar; j++) {
+        cur[j] = dp[j];
+        if (num[i] <= j) cur[j] += dp[j-num[i]];
+    }
+    dp = cur;
+}
+return dp[tar];
+
+// Counts Subsets with Sum K where array can have 0 value(DP-17.5)**********************
+// Similar to previous ones
+
+start by calling  f(n-1, K);
+f(i, sum) {
+	if (i == 0) {
+		if (sum == 0 && arr[0] == 0) return 2;
+		if (sum == 0 || sum == arr[0]) return 1;
+		return 0;
+	}
+	
+	int notpick = f(i-1, sum);
+	int pick = 0;
+	if (arr[i] <= sum) pick = f(i-1, sum - arr[i]);
+	
+	return pick + notpick;
+}
+
+// Memoization can be done easily skipping it
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(tar+1, 0));
+if (num[0] == 0) dp[0][0] = 2;
+else dp[0][0] = 1;
+if (num[0] != 0 && num[0] <= tar) dp[0][num[0]] = 1; // first condition for case
+													// when arr[0] = 0, this will give WA
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= tar; j++) {
+        dp[i][j] = dp[i-1][j];
+        if (num[i] <= j) dp[i][j] += dp[i-1][j-num[i]];
+    }
+}
+return dp[n-1][tar];
+
+// Space optimization
+
+vector<int> dp(tar+1, 0), cur(tar + 1);
+if (num[0] == 0) dp[0] = 2;
+else dp[0] = 1;
+if (num[0] != 0 && num[0] <= tar) dp[num[0]] = 1;
+
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= tar; j++) {
+        cur[j] = dp[j];
+        if (num[i] <= j) cur[j] += dp[j-num[i]];
+    }
+    dp = cur;
+}
+return dp[tar];
+
+// Partitions With Given Difference (DP-18) *************
+// It can be treated same as previous problem as not given difference can be calculated
+// by (total - given diffrence)
+// By using some math
+// As, S1 - S2 = D
+// also, S1 = total - S2
+// .'. (total - S2 - S2) =  D
+// => S2 = (total - D) / 2
+// .'. target = (total - D) / 2
+
+int mod = 1e9+7;
+int countPartitions(int n, int d, vector<int> &num) {
+int total = 0;
+for (auto &ele: num) total += ele;
+
+if ((total-d) < 0 || (total-d)&1) return 0;
+int tar = (total-d)/2; // <---- using math above
+vector<int> dp(tar+1, 0), cur(tar + 1);
+if (num[0] == 0) dp[0] = 2;
+else dp[0] = 1;
+if (num[0] != 0 && num[0] <= tar) dp[num[0]] = 1;
+
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= tar; j++) {
+        cur[j] = dp[j];
+        if (num[i] <= j) cur[j] += dp[j-num[i]];
+        cur[j] = cur[j]%mod;
+    }
+    dp = cur;
+}
+return dp[tar];
+}
+
+// 0/1 Knapsack (DP-19) ************
+
+start by calling  f(n-1, maxWeight, weight, value);
+int f(int i, int wt, vector<int> &weights, vector<int> &value) {
+    if (i == 0) {
+        if (wt >= weights[i]) return value[i];
+        else return 0;
+    }
+    int pick = INT_MIN;
+    if (wt >= weights[i]) pick = value[i] + f(i-1, wt-weights[i], weights, value);
+    int notpick = f(i-1, wt, weights, value);
+    return max(pick, notpick);
+}
+
+// Memoization
+
+vector<vector<int>> dp(n, vector<int>(maxWeight+1, -1));
+start by calling f(n-1, maxWeight, weight, value, dp);
+int f(int i, int wt, vector<int> &weights, vector<int> &value, vector<vector<int>> &dp) {
+    if (i == 0) {
+        if (wt >= weights[i]) return value[i];
+        else return 0;
+    }
+    if (dp[i][wt] != -1) return dp[i][wt];
+    int pick = INT_MIN;
+    if (wt >= weights[i]) pick = value[i] + f(i-1, wt-weights[i], weights, value, dp);
+    int notpick = f(i-1, wt, weights, value, dp);
+    return dp[i][wt] = max(pick, notpick);
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(maxWeight+1, 0));
+for (int j = weights[0]; j <= maxWeight; j++) {
+	dp[0][j] = value[0];
+}
+for (int i = 1; i < n; i++) {
+	for (int wt = 0; wt <= maxWeight; wt++) {
+		int pick = INT_MIN;
+    	if (wt >= weights[i]) pick = value[i] + dp[i-1][wt-weights[i]];
+    	int notpick = dp[i-1][wt];
+    	dp[i][wt] = max(pick, notpick);
+	}
+}
+return dp[n-1][maxWeight];
+
+// Space Optimization
+
+vector<int> dp(maxWeight+1, 0), cur(maxWeight+1); 
+for (int j = weights[0]; j <= maxWeight; j++) {
+	dp[j] = value[0];
+}
+for (int i = 1; i < n; i++) {
+	for (int wt = 0; wt <= maxWeight; wt++) {
+		int pick = INT_MIN;
+    	if (wt >= weights[i]) pick = value[i] + dp[wt-weights[i]];
+    	int notpick = dp[wt];
+    	cur[wt] = max(pick, notpick);
+	}
+	dp = cur;
+}
+return dp[maxWeight];
+
+// Single Array Optimization #########
+
+vector<int> dp(maxWeight+1, 0); 
+for (int j = weights[0]; j <= maxWeight; j++) {
+    dp[j] = value[0];
+}
+for (int i = 1; i < n; i++) {
+    for (int wt = maxWeight; wt >= 0 ; wt--) {
+        int pick = INT_MIN;
+        if (wt >= weights[i]) pick = value[i] + dp[wt-weights[i]];
+        int notpick = dp[wt];
+        dp[wt] = max(pick, notpick);
+    }
+}
+return dp[maxWeight];
+
+// Minimum Coins (DP-20) *************
+
+start by calling     int ans = f(num.size()-1, x, num);
+    				 if (ans == 1e9) return -1;
+    				 return ans;
+f(i, tar) {
+	if (i == 0) {
+      if (tar % coins[i] == 0) return tar / coins[i];
+      else return 1e9;
+    }
+	
+	int mini = INT_MAX, no = 0;
+	for (int ind = 0; ind <= tar; ind += coins[i], no++) {
+		mini = min(mini, no+f(i-1, tar-ind));
+	}
+	return mini;
+}
+
+// Alternatively,
+
+f(i, tar) {
+	if (i == 0) {
+		if (tar % coins[i] == 0) return tar / coins[i];
+      	else return 1e9;
+	}
+	
+	notpick = f(i-1, tar);
+	pick = INT_MAX;
+	if (coins[i] <= tar) pick = 1 + f(i, tar-coins[i]); // !IMPORTANT
+	return min(notpick, pick);
+}
+
+// Space optimized Solution
+
+ vector<int> dp(x+1, 0), cur(x+1);
+ for (int tar = 0; tar <= x; tar++) {
+     if ((tar % num[0]) == 0) dp[tar] = tar / num[0];
+     else dp[tar] = 1e9;
+ }
+ for (int i = 1; i < num.size(); i++) {
+     for (int tar = 0; tar <= x; tar++) {
+         int mini = INT_MAX, no = 0;
+         for (int ind = 0; ind <= tar; ind += num[i], no++) {
+             mini = min(mini, no + dp[tar-ind]);
+         }
+         cur[tar] = mini;
+     }
+     dp = cur;
+ }
+ if (dp[x] == 1e9) return -1;
+ return dp[x];
+ 
+ // Alternatively,
+ 
+vector<int> dp(x+1, 0), cur(x+1);
+for (int tar = 0; tar <= x; tar++) {
+    if ((tar % num[0]) == 0) dp[tar] = tar / num[0];
+    else dp[tar] = 1e9;
+}
+for (int i = 1; i < num.size(); i++) {
+   for (int tar = 0; tar <= x; tar++) {
+        int notpick = dp[tar];
+        int pick = INT_MAX;
+        if (num[i] <= tar) pick = 1 + cur[tar-num[i]];
+        cur[tar] = min(notpick, pick);
+    }
+    dp = cur;
+}
+if (dp[x] == 1e9) return -1;
+return dp[x];
+
+// Target Sum (DP-21)
+// Similar(Same) to DP-18 with changed language
+
+int countPartitions(int n, int d, vector<int> &num) {
+int total = 0;
+for (auto &ele: num) total += ele;
+
+if ((total-d) < 0 || (total-d)&1) return 0;
+int tar = (total-d)/2;
+vector<int> dp(tar+1, 0), cur(tar + 1);
+if (num[0] == 0) dp[0] = 2;
+else dp[0] = 1;
+if (num[0] != 0 && num[0] <= tar) dp[num[0]] = 1;
+
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= tar; j++) {
+        cur[j] = dp[j];
+        if (num[i] <= j) cur[j] += dp[j-num[i]];
+    }
+    dp = cur;
+}
+return dp[tar];
+}
+int targetSum(int n, int target, vector<int>& arr) {
+    return countPartitions(n, target, arr);
+}
+
+// Ways To Make Coin Change
+// Similar to Coin Change with infinite supply
+
+f(i, tar) {
+	if (i == 0) return tar%arr[i]==0;
+	
+	nottake = f(i-1, tar);
+	take = 0;
+	if (tar >= arr[i])
+		take = f(i, tar-arr[i]);
+	return take + nottake;
+}
+
+// Unbounded Knapsack (DP-23)
+
+f(i, wt) {
+	if (i == 0) {
+		return (wt/weights[i])*val[i];
+	}
+	nottake = f(i-1, wt);
+	take = INT_MIN;
+	if (weights[i] <= wt) take = val[i] + f(i, wt-weights[i]);
+	return max(nottake, take);
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(wt+1, 0));
+for (int i = 0; i <= wt; i++) {
+    dp[0][i] = ((int)(i/weights[0]))*profit[0];
+}
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= wt; j++) {
+        int nottake = dp[i-1][j];
+        int take = INT_MIN;
+        if (weights[i] <= j) take = profit[i] + dp[i][j-weights[i]];
+        dp[i][j] = max(nottake, take);
+    }
+}
+return dp[n-1][wt];
+
+// Space optimized 1D
+
+vector<int> dp(wt+1, 0);
+for (int i = 0; i <= wt; i++) {
+    dp[i] = ((int)(i/weights[0]))*profit[0];
+}
+for (int i = 1; i < n; i++) {
+    for (int j = 0; j <= wt; j++) {
+        int nottake = dp[j];
+        int take = INT_MIN;
+        if (weights[i] <= j) take = profit[i] + dp[j-weights[i]];
+        dp[j] = max(nottake, take);
+    }
+}
+return dp[wt];
+
+// Rod Cutting Problem (DP-24)
+
+start by calling    f(n-1, n, price);
+f(i, len) {
+	if (i == 0) {
+		return len * price[0];
+	}
+	int nottake = f(i-1, len);
+	int take = INT_MIN;
+	if ((i+1) <= len) take = price[i] + f(i, len - (i+1));
+	return max(take, nottake);
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n, vector<int>(n+1, 0));
+for (int len = 0; len <= n; len++) dp[0][len] = len * price[0];
+for (int i = 1; i < n; i++) {
+    for (int len = 0; len <= n; len++) {
+        int nottake = dp[i-1][len];
+        int take = INT_MIN;
+        if ((i+1) <= len) take = price[i] + dp[i][len - (i+1)];
+        dp[i][len] = max(take, nottake);
+    }
+}
+return dp[n-1][n];
+
+// Space 1D Optimized
+
+vector<int> dp(n+1, 0);
+for (int len = 0; len <= n; len++) dp[len] = len * price[0];
+for (int i = 1; i < n; i++) {
+    for (int len = 0; len <= n; len++) {
+        int nottake = dp[len];
+        int take = INT_MIN;
+        if ((i+1) <= len) take = price[i] + dp[len - (i+1)];
+        dp[len] = max(take, nottake);
+    }
+}
+return dp[n];
+
+// Longest Common Subsequence (DP-25)
+
+f(i1, i2) {
+	if (i1 < 0 || i2 < 0) return 0;
+	
+	if (s1[i1] == s2[i2]) return 1 + f(i1-1, i2-1);
+	return max(f(i1-1, i2), f(i1, i2-1));
+}
+
+// Memoizatoin
+
+start by calling 		vector<vector<int>> dp(s.length(), vector<int>(t.length(), -1));
+						return f(s.length()-1, t.length()-1, s, t, dp);
+int f(int i1, int i2, string &s1, string &s2, vector<vector<int>> &dp) {
+    if (i1 < 0 || i2 < 0) return 0;
+    if (dp[i1][i2] != -1) return dp[i1][i2];
+    if (s1[i1] == s2[i2]) return 1 + f(i1-1, i2-1, s1, s2, dp);
+    return dp[i1][i2] = max(f(i1-1, i2, s1, s2, dp), f(i1, i2-1, s1, s2, dp));
+}
+
+// Tabulation
+
+this is done using one index shifting (STRIVR's way)
+int n = s1.length(), m = s2.length();
+vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+for (int i1 = 1; i1 <= n; i1++) {
+    for (int i2 = 1; i2 <= m; i2++) {
+        if (s1[i1-1] == s2[i2-1]) dp[i1][i2] = 1 + dp[i1-1][i2-1];
+        else dp[i1][i2] = max(dp[i1-1][i2], dp[i1][i2-1]);
+    }
+}
+return dp[n][m];
+
+// Alternatively, my way
+
+int n = s1.length(), m = s2.length();
+vector<vector<int>> dp(n, vector<int>(m, 0));
+for (int i1 = 0; i1 < n; i1++) {
+    for (int i2 = 0; i2 < m; i2++) {
+        if (s1[i1] == s2[i2]) dp[i1][i2] = 1 + ((i1-1)<0?0:dp[i1-1][i2-1]);
+        else dp[i1][i2] = max(((i1-1)<0?0:dp[i1-1][i2]), ((i1-1)<0?0:dp[i1][i2-1]));
+    }
+}
+return dp[s1.length()-1][s2.length()-1];
+
+// Space Optimized, Striver's 
+
+int n = s1.length(), m = s2.length();
+vector<int> dp(m+1, 0), cur(m+1);
+for (int i1 = 1; i1 <= n; i1++) {
+    for (int i2 = 1; i2 <= m; i2++) {
+        if (s1[i1-1] == s2[i2-1]) cur[i2] = 1 + dp[i2-1];
+        else cur[i2] = max(dp[i2], cur[i2-1]);
+    }
+    dp = cur;
+}
+return dp[m];
+
+// Print Longest Common Subsequence (DP-26)
+
+---> this this striver's way
+int n = s1.length(), m = s2.length();
+vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+for (int i1 = 1; i1 <= n; i1++) {
+    for (int i2 = 1; i2 <= m; i2++) {
+        if (s1[i1-1] == s2[i2-1]) dp[i1][i2] = 1 + dp[i1-1][i2-1];
+        else dp[i1][i2] = max(dp[i1-1][i2], dp[i1][i2-1]);
+    }
+}
+int len = dp[n][m];
+string ans(len, '@');
+int index = len - 1;
+int i = n, j = m;
+while (i > 0 && j > 0) {
+    if (s1[i-1] == s2[j-1]) {
+        ans[index--] = s1[i-1];
+        i--, j--;
+    } else if (dp[i-1][j] > dp[i][j-1]) i--;
+    else j--;
+}
+cout << ans << endl;
+
+//  Longest Common Substring (DP-27) ***********
+
+---> direct tabulation
+int n = s1.size(), m = s2.size();
+vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+int ans = 0;
+for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+        if (s1[i-1] == s2[j-1]) dp[i][j] = 1 + dp[i-1][j-1];
+        else dp[i][j] = 0;
+        ans = max(ans, dp[i][j]);
+    }
+}
+return ans;
+
+// Space Optimized
+
+int n = s1.size(), m = s2.size();
+vector<int> dp(m+1, 0), cur(m+1, 0);
+int ans = 0;
+for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+        if (s1[i-1] == s2[j-1]) cur[j] = 1 + dp[j-1];
+        else cur[j] = 0;
+        ans = max(ans, cur[j]);
+    }
+    dp = cur;
+}
+return ans;
+
+// Longest Palindromic Subsequence (DP-28)
+// when we reverse the given string and try to find Longest common subsequence
+// this will be same as DP-25
+
+int getLengthOfLCS(string &s1, string &s2) {
+    int n = s1.length(), m = s2.length();
+    vector<int> dp(m+1, 0), cur(m+1);
+    for (int i1 = 1; i1 <= n; i1++) {
+        for (int i2 = 1; i2 <= m; i2++) {
+            if (s1[i1-1] == s2[i2-1]) cur[i2] = 1 + dp[i2-1];
+            else cur[i2] = max(dp[i2], cur[i2-1]);
+        }
+        dp = cur;
+    }
+    return dp[m];
+}
+int longestPalindromeSubsequence(string s2)
+{
+    string s1 = s2;
+    reverse(s2.begin(), s2.end());
+    return getLengthOfLCS(s1, s2);
+}
+
+// Minimum Insertions to Make String Palindrome (DP-29) 
+// if we do not change longest Palindrome Subsequence and just insert
+// the reverse of not matching part of string, this question will be same
+// as previous one i.e. DP-28
+
+int getLengthOfLCS(string &s1, string &s2) {
+    int n = s1.length(), m = s2.length();
+    vector<int> dp(m+1, 0), cur(m+1);
+    for (int i1 = 1; i1 <= n; i1++) {
+        for (int i2 = 1; i2 <= m; i2++) {
+            if (s1[i1-1] == s2[i2-1]) cur[i2] = 1 + dp[i2-1];
+            else cur[i2] = max(dp[i2], cur[i2-1]);
+        }
+        dp = cur;
+    }
+    return dp[m];
+}
+int longestPalindromeSubsequence(string s2)
+{
+    string s1 = s2;
+    reverse(s2.begin(), s2.end());
+    return getLengthOfLCS(s1, s2);
+}
+int minInsertion(string &str)
+{
+    return str.size() - longestPalindromeSubsequence(str);
+}
+
+// Shortest Common Supersequence (DP-31)
+
+int n = s1.length(), m = s2.length();
+vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+for (int i1 = 1; i1 <= n; i1++) {
+    for (int i2 = 1; i2 <= m; i2++) {
+        if (s1[i1-1] == s2[i2-1]) dp[i1][i2] = 1 + dp[i1-1][i2-1];
+        else dp[i1][i2] = max(dp[i1-1][i2], dp[i1][i2-1]);
+    }
+}
+string ans = "";
+int i = n, j = m;
+while (i > 0 && j > 0) {
+    if (s1[i-1] == s2[j-1]) {
+        ans += s1[i-1];
+        i--, j--;
+    } else if (dp[i-1][j] > dp[i][j-1]) {ans += s1[i-1]; i--;}
+    else {ans += s2[j-1]; j--;}
+}
+while (i > 0) {ans += s1[i-1]; i--;}
+while (j > 0) {ans += s2[j-1]; j--;}
+reverse(ans.begin(), ans.end());
+return ans;
+
+// Distinct Subsequences (DP-32) ****************
+
+f(i, j) {
+	if (j < 0) return 0;
+	if (i < 0) return 0;
+	if (s[i] == t[j]) return f(i-1, j-1) + f(i-1, j);
+	return f(i-1, j);
+}
+
+// Memoization
+
+int f(int i, int j, string &s, string &t, vector<vector<int>> &dp) {
+    if (j < 0) return 1;
+    if (i < 0) return 0;
+    if (dp[i][j] != -1) return dp[i][j];
+    if (s[i] == t[j]) return dp[i][j] = f(i-1, j-1, s, t, dp) + f(i-1, j, s, t, dp);
+    return dp[i][j] = f(i-1, j, s, t, dp);
+}
+
+// Tabulation (using shifting)
+
+vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+for (int i = 0; i < n; i++) {
+    dp[i][0] = 1;
+}
+for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+        if (s[i-1] == t[j-1]) dp[i][j] = (dp[i-1][j-1]+dp[i-1][j])%mod;
+        else dp[i][j] = (dp[i-1][j])%mod;
+    }
+}
+return dp[n][m];
+
+// 1D Space Optimized
+
+int subsequenceCounting(string &s, string &t, int n, int m) {
+vector<int> dp(m+1, 0);
+dp[0] = 1;
+for (int i = 1; i <= n; i++) {
+    for (int j = m; j > 0; j--) {
+        if (s[i-1] == t[j-1]) dp[j] = (dp[j-1]+dp[j])%mod;
+    }
+}
+return dp[m];
+
+// Edit Distance (DP-33) 
+
+f(i, j) {
+	if (i < 0) return j+1;
+	if (j < 0) return i+1;
+	if (s[i] == t[j]) return f(i-1, j-1);
+	return min({1+f(i, j-1), // insert
+				1+f(i-1, j), // delete
+				1+f(i-1, j-1) // replace
+				})
+}
+
+// Alternatively, if shift to 1 based indexing
+
+f(i, j) {
+	if (i == 0) return j;
+	if (j == 0) return i;
+	if (s[i-1] == t[j-1]) return f(i-1, j-1);
+	return min({1 + f(i, j-1), // insert
+				1 + f(i-1, j), // delete
+				1 + f(i-1, j-1) // replace
+				})
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+for (int j = 1; j <= m; j++) dp[0][j] = j;
+for (int i = 1; i <= n; i++) dp[i][0] = i;
+for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+        if (s[i-1] == t[j-1]) dp[i][j] = dp[i-1][j-1];
+        else dp[i][j] = 1+min({dp[i][j-1], dp[i-1][j], dp[i-1][j-1]});
+    }
+}
+return dp[n][m];
+
+// Space Optimizatoin
+
+vector<int> dp(m+1, 0), cur(m+1, 0);
+for (int j = 1; j <= m; j++) dp[j] = j;
+for (int i = 1; i <= n; i++) {
+	cur[0] = i; // <------- IMPORTANT LINE
+    for (int j = 1; j <= m; j++) {
+        if (s[i-1] == t[j-1]) cur[j] = dp[j-1];
+        else cur[j] = 1+min({cur[j-1], dp[j], dp[j-1]});
+    }
+    dp = cur;
+}
+return dp[m];
+
+// 1D Space Optimization
+// NOT POSSIBLE
+
+// Wildcard Matching (DP-34)
+
+f(i, j) {
+	if (i < 0 && j < 0) return true;
+	if (i < 0 && j >= 0) return false;
+	if (j < 0 && i >= 0) {
+		while (i >= 0) {
+			if (s[i] != '*') return false;
+			i--;
+		}
+		return true;
+	}
+	if (s[i] == t[j] || s[i] == '?') return f(i-1, j-1);
+	if (s[i] == '*') return f(i-1, j) or f(i, j-1);
+	return false;
+}
+
+// Memoization
+
+bool f(int i, int j, string &s, string &t, vector<vector<int>> &dp) {
+    if (i < 0 && j < 0) return true;
+    if (i < 0 && j >= 0) return false;
+    if (j < 0 && i >= 0) {
+        while (i >= 0) {
+            if (s[i] != '*') return false;
+            i--;
+        }
+        return true;
+    }
+    if (dp[i][j] != -1) return dp[i][j];
+    if (s[i] == t[j] || s[i] == '?') return dp[i][j] = f(i-1, j-1, s, t, dp);
+    if (s[i] == '*') return dp[i][j] = f(i-1, j, s, t, dp) or f(i, j-1, s, t, dp);
+    return dp[i][j] = false;
+}
+
+// Tabulation
+
+    int n = s.size(), m = t.size();
+    vector<vector<bool>> dp(n+1, vector<bool>(m+1, false));
+    dp[0][0] = true;
+    for (int j = 1; j <= m; j++) dp[0][j] = false;
+    for (int i = 1; i <= n; i++) {
+        int tempi = i;
+        dp[i][0] = true;
+        while (tempi > 0) {
+            if (s[tempi-1] != '*') {
+                dp[i][0] = false;
+                break;
+            }
+            tempi--;
+        }
+    }
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (s[i-1] == t[j-1] || s[i-1] == '?') 
+                dp[i][j] = dp[i-1][j-1];
+            else if (s[i-1] == '*') 
+                dp[i][j] = dp[i-1][j] or dp[i][j-1];
+            else dp[i][j] = false;
+        }
+    }
+   return dp[n][m];
+ 
+// Space Optimized 2D
+
+int n = s.size(), m = t.size();
+vector<bool> dp(m+1, false), cur(m+1);
+dp[0] = true;
+for (int i = 1; i <= n; i++) {
+    int tempi = i;
+    cur[0] = true;
+    while (tempi > 0) {
+        if (s[tempi-1] != '*') {
+            cur[0] = false;
+            break;
+        }
+        tempi--;
+    }
+    for (int j = 1; j <= m; j++) {
+        if (s[i-1] == t[j-1] || s[i-1] == '?') 
+            cur[j] = dp[j-1];
+        else if (s[i-1] == '*') 
+            cur[j] = dp[j] or cur[j-1];
+        else cur[j] = false;
+    }
+    dp = cur;
+}
+return dp[m];
+
+// Buy and Sell Stock - II (DP-36)
+
+f(i, buy, n) {
+	if (i == n) return 0;
+	
+	int profit;
+	if (buy) {
+		return max(f(i+1, !buy, n)-prices[i], f(i+1, buy, n));
+	} else {
+		return max(f(i+1, !buy, n)+prices[i], f(i+1, buy, n));
+	}
+}
+
+// Memoization
+
+long f(long i, bool buy, int &n, long *prices, vector<vector<long>> &dp) {
+    if (i == n) return 0;
+    
+    if (dp[i][buy] != -1) return dp[i][buy];
+    if (buy) {
+        return dp[i][buy] = max(f(i+1, !buy, n, prices, dp)-prices[i], f(i+1, buy, n, prices, dp));
+    } else {
+        return dp[i][buy] = max(f(i+1, !buy, n, prices, dp)+prices[i], f(i+1, buy, n, prices, dp));
+    }
+}
+
+// Tabulation
+
+vector<vector<long>> dp(n+1, vector<long>(2, 0));
+for (int i = n-1; i >= 0; i--) {
+    for (int buy = 0; buy <= 1; buy++) {
+        if (buy) {
+            dp[i][buy] = max(dp[i+1][!buy]-prices[i], dp[i+1][buy]);
+        } else {
+            dp[i][buy] = max(dp[i+1][!buy]+prices[i], dp[i+1][buy]);
+        }
+    }
+}
+return dp[0][1];
+
+// Space Optimized
+
+long next_buy = 0, next_nobuy = 0, cur_buy = 0, cur_nobuy = 0;
+for (int i = n-1; i >= 0; i--) {
+    for (int buy = 0; buy <= 1; buy++) {
+        if (buy) {
+            cur_buy = max(next_nobuy-prices[i], next_buy);
+        } else {
+            cur_nobuy = max(next_buy+prices[i], next_nobuy);
+        }
+    }
+    next_buy = cur_buy;
+    next_nobuy = cur_nobuy;
+}
+return next_buy;
+
+// Shorterned Code
+
+long next_buy = 0, next_nobuy = 0, cur_buy = 0, cur_nobuy = 0;
+for (int i = n-1; i >= 0; i--) {
+    cur_buy = max(next_nobuy-prices[i], next_buy);
+    cur_nobuy = max(next_buy+prices[i], next_nobuy);
+    next_buy = cur_buy;
+    next_nobuy = cur_nobuy;
+}
+return next_buy;
+
+// Buy and Sell Stocks III (DP-37)
+
+f(i, buy, n, cap) {
+	if (cap == 0) return 0;
+	if (i == n) return 0;
+	
+	if (buy) {
+		return max(f(i+1, false, n, cap)-prices[i], f(i+1, true, n, cap));
+	} else {
+		return man(f(i+1, true, n, cap-1)+prices[i], f(i+1, false, n, cap));
+	}
+}
+
+// Memoization
+
+vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int>(3, -1)));
+int f(int i, int buy, int &n, int cap, vector<int> &prices, vector<vector<vector<int>>> &dp) {
+    if (cap == 0) return 0;
+    if (i == n) return 0;
+    if (dp[i][buy][cap] != -1) return dp[i][buy][cap];
+    if (buy) {
+        return dp[i][buy][cap] = max(f(i+1, false, n, cap, prices, dp)-prices[i], f(i+1, true, n, cap, prices, dp));
+    } else {
+        return dp[i][buy][cap] = max(f(i+1, true, n, cap-1, prices, dp)+prices[i], f(i+1, false, n, cap, prices, dp));
+    }
+}
+
+// Tabulation
+
+vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int>(3, 0)));
+for (int i = n-1; i >= 0; i--) {
+    for (int buy = 0; buy <= 1; buy++) {
+        for (int cap = 1; cap <= 2; cap++) {
+            if (buy) {
+                dp[i][buy][cap] = max(dp[i+1][false][cap]-prices[i], dp[i+1][true][cap]);
+            } else {
+                dp[i][buy][cap] = max(dp[i+1][true][cap-1]+prices[i], dp[i+1][false][cap]);
+            }
+        }
+    }
+}
+return dp[0][true][2];
+
+// Space Optimized 2D
+
+vector<vector<int>> dp(2, vector<int>(3, 0));
+vector<vector<int>> cur(2, vector<int>(3, 0));
+for (int i = n-1; i >= 0; i--) {
+    for (int buy = 0; buy <= 1; buy++) {
+        for (int cap = 1; cap <= 2; cap++) {
+            if (buy) {
+                cur[buy][cap] = max(dp[false][cap]-prices[i], dp[true][cap]);
+            } else {
+                cur[buy][cap] = max(dp[true][cap-1]+prices[i], dp[false][cap]);
+            }
+        }
+    }
+    dp = cur;
+}
+return dp[true][2];
+
+// alternatively for space optimization to N*4 here we take advantage of odd even
+// as even transaction for buy and odd transaction for sell
+// firstly, recurrence relation
+
+f(i, transaction) {
+	if (i == n || transaction == 4) return 0;
+	
+	if (transaction&1) { // sell
+		return max(f(i+1, transaction+1)+prices[i], f(i+1, transaction));
+	} else { // buy
+		return max(f(i+1, transaction+1)-prices[i], f(i+1, transaction));
+	}
+}
+
+// Space optimized to N*4
+
+vector<vector<int>> dp(n+1, vector<int>(5, 0)); ---> Remember to keep it 5
+
+for (int i = (n-1); i >= 0; i--) {
+	for (int transaction = 0; transaction <= 3; transaction++) {
+		if (transaction&1) { // sell
+			dp[i][transaction] = max(dp[i+1][transaction+1]+prices[i], dp[i+1][transaction]);
+		} else { // buy
+			dp[i][transaction] = max(dp[i+1][transaction+1]-prices[i], dp[i+1][transaction]);
+		}
+	}
+}
+return dp[n][3];
+
+// Buy and Stock Sell IV (DP-38)
+// Here we have remember if we are performing k buy sell than
+// there are 2*k transactions
+// Skipping Recurrence as it is like previous solution
+// Tabulation
+
+vector<vector<int>> dp(n+1, vector<int>(2*k+1, 0));
+for (int i = (n-1); i >= 0; i--) {
+    for (int transaction = 0; transaction < 2*k; transaction++) {
+        if (transaction&1) { // sell
+            dp[i][transaction] = max(dp[i+1][transaction+1]+prices[i], dp[i+1][transaction]);
+        } else { // buy
+            dp[i][transaction] = max(dp[i+1][transaction+1]-prices[i], dp[i+1][transaction]);
+        }
+    }
+}
+return dp[0][0];
+
+// Space Optimized
+
+vector<int> dp(2*k+1, 0), cur(2*k+1);
+for (int i = (n-1); i >= 0; i--) {
+    for (int transaction = 0; transaction < 2*k; transaction++) {
+        if (transaction&1) { // sell
+            cur[transaction] = max(dp[transaction+1]+prices[i], dp[transaction]);
+        } else { // buy
+            cur[transaction] = max(dp[transaction+1]-prices[i], dp[transaction]);
+        }
+    }
+    dp = cur;
+}
+return dp[0];
+
+// Buy and Sell Stocks With Cooldown (DP-39)
+// here we just move more steps instead of one when we sell the stock
+
+f(i, buy, n) {
+	if (i >= n) return 0;
+	
+	int profit;
+	if (buy) {
+		return max(f(i+1, !buy, n)-prices[i], f(i+1, buy, n));
+	} else {
+		return max(f(i+2, !buy, n)+prices[i], f(i+1, buy, n));
+	}
+}
+
+// Space optimized 2D
+
+int n = prices.size();
+vector<vector<long>> dp(n+2, vector<long>(2, 0));
+for (int i = n-1; i >= 0; i--) {
+    for (int buy = 0; buy <= 1; buy++) {
+        if (buy) {
+            dp[i][buy] = max(dp[i+1][!buy]-prices[i], dp[i+1][buy]);
+        } else {
+            dp[i][buy] = max(dp[i+2][!buy]+prices[i], dp[i+1][buy]);
+        }
+    }
+}
+return dp[0][1];
+
+// Space Optimized 1D
+
+vector<int> front1(2, 0), front2(2, 0), cur(2, 0);
+for (int i = n-1; i >= 0; i--) {
+    for (int buy = 0; buy <= 1; buy++) {
+        if (buy) {
+            cur[buy] = max(front1[!buy]-prices[i], front1[buy]);
+        } else {
+            cur[buy] = max(front2[!buy]+prices[i], front1[buy]);
+        }
+    }
+    front2 = front1;
+    front1 = cur;
+}
+return cur[1];
+
+// Buy and Sell Stocks With Transaction Fee (DP-40)
+
+long next_buy = 0, next_nobuy = 0, cur_buy = 0, cur_nobuy = 0;
+for (int i = n-1; i >= 0; i--) {
+    cur_buy = max(next_nobuy-prices[i], next_buy);
+    cur_nobuy = max(next_buy+prices[i]-fee, next_nobuy);
+    next_buy = cur_buy;
+    next_nobuy = cur_nobuy;
+}
+return next_buy;
+}
+
+// Longest Increasing Subsequence (DP-41)
+
+f(ind, prev_ind) {
+	if (ind == n) return 0;
+	
+	len = f(ind+1, prev_ind); // not take
+	if (prev_ind == -1 || arr[ind] > arr[prev_ind])
+		len = max(1+f(ind+1, ind), len); // take
+	return len;
+}
+
+// Cordinated shift by one index
+
+f(ind, prev_ind) {
+	if (ind == n+1) return 0;
+	
+	len = f(ind+1, prev_ind); // not take
+	if (prev_ind == 0 || arr[ind-1] > arr[prev_ind-1])
+		len = max(1+f(ind+1, ind), len); // take
+	return len;
+}
+
+// Memoization
+
+vector<vector<int>> dp(n, vector<int>(n+1, -1));
+int f(int ind, int prev_ind, int arr[], int n, vector<vector<int>> &dp) {
+    if (ind == n) return 0;
+    if (dp[ind][prev_ind+1] != -1) return dp[ind][prev_ind+1];
+    int len = f(ind+1, prev_ind, arr, n, dp);
+    if (prev_ind == -1 || arr[ind] > arr[prev_ind])
+        len = max(1+f(ind+1, ind, arr, n, dp), len);
+    return dp[ind][prev_ind+1] = len;
+}
+
+// Tabulation
+
+vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+for (int ind = n-1; ind >= 0; ind--) {
+    for (int prev_ind = ind-1; prev_ind >= -1; prev_ind--) {
+        dp[ind][prev_ind+1] = dp[ind+1][prev_ind+1];
+        if (prev_ind == -1 || arr[ind] > arr[prev_ind])
+            dp[ind][prev_ind+1] = max(1+dp[ind+1][ind+1], dp[ind][prev_ind+1]);
+    }
+}
+return dp[0][0];
+
+// Space Optimization
+
+vector<int> dp(n+1, 0), cur(n+1, 0);
+for (int ind = n-1; ind >= 0; ind--) {
+    for (int prev_ind = ind-1; prev_ind >= -1; prev_ind--) {
+        cur[prev_ind+1] = dp[prev_ind+1];
+        if (prev_ind == -1 || arr[ind] > arr[prev_ind])
+            cur[prev_ind+1] = max(1+dp[ind+1], cur[prev_ind+1]);
+    }
+    dp = cur;
+}
+return dp[0];
+
+// Alternatively, another approach
+// using dp of size n in which each element denotes longest increasing subsequence
+// this technique is required to trace back the LIS
+
+vector<int> dp(n, 1);
+int maxi = 1;
+for (int i = 0; i < n; i++) {
+    for (int prev = 0; prev < i; prev++) {
+        if (arr[prev] < arr[i]) dp[i] = max(dp[i], 1+dp[prev]);
+    }
+    maxi = max(maxi, dp[i]);
+}
+return maxi;
+
+// Printing Longest Increasing Subsequence (DP-42)
+
+vector<int> dp(n, 1), hash(n);
+int maxi = 1;
+int lastInd = 0;
+for (int i = 0; i < n; i++) {
+    hash[i] = i;
+    for (int prev = 0; prev < i; prev++) {
+        if (arr[prev] < arr[i] && dp[i] < (1+dp[prev])) {
+            dp[i] = 1+dp[prev];
+            hash[i] = prev;
+        }
+    }
+    if (maxi < dp[i]) {
+        maxi = dp[i];
+        lastInd = i;
+    }
+}
+vector<int> lci;
+lci.push_back(arr[lastInd]);
+while (lastInd >= 0 && hash[lastInd] != lastInd) {
+    lastInd = hash[lastInd];
+    lci.push_back(arr[lastInd]);
+}
+reverse(lci.begin(), lci.end());
+for (auto &ele: lci) cout << ele << " ";
+cout << endl;
+return maxi;
+
+// Longest Increasing Subsequence (DP-43)
+// Alternatively, binary search approach to solve for very large test cases which tell the size only
+
+vector<int> temp;
+temp.push_back(arr[0]);
+for (int i = 1; i < n; i++) {
+    if (arr[i] > temp.back()) temp.push_back(arr[i]);
+    else {
+	    int ind = lower_bound(temp.begin(), temp.end(), arr[i]) - temp.begin();
+	    temp[ind] = arr[i];
+    }
+}
+return temp.size();
+
+// Largest Divisible Subset
+// Same as DP-42, just we have to sort array and change one condition of divisibility
+
+int n = arr.size();
+vector<int> dp(n, 1), hash(n);
+sort(arr.begin(), arr.end());
+int maxi = 1;
+int lastInd = 0;
+for (int i = 0; i < n; i++) {
+    hash[i] = i;
+    for (int prev = 0; prev < i; prev++) {
+        if (arr[i] % arr[prev] == 0 && dp[i] < (1+dp[prev])) {
+            dp[i] = 1+dp[prev];
+            hash[i] = prev;
+        }
+    }
+    if (maxi < dp[i]) {
+        maxi = dp[i];
+        lastInd = i;
+    }
+}
+vector<int> lci;
+lci.push_back(arr[lastInd]);
+while (hash[lastInd] != lastInd) {
+    lastInd = hash[lastInd];
+    lci.push_back(arr[lastInd]);
+}
+reverse(lci.begin(), lci.end());
+return lci;
+
+// Longest String Chain (DP-45)
+// Similar to DP-42
+
+bool check(string &s1, string &s2) {
+    if (s1.size() != (s2.size()+1)) return false;
+    int first = 0, second = 0;
+    while (first < s1.size()) {
+        if (second < s2.size() && s1[first] == s2[second]) {
+            first++;
+            second++;
+        } else first++;
+    }
+    if (first == s1.size() && second == s2.size()) return true;
+    return false;
+}
+bool comp(string &s1, string &s2) {
+    return s1.size() < s2.size();
+}
+int longestStrChain(vector<string> &arr)
+{
+int n = arr.size();
+vector<int> dp(n, 1);
+sort(arr.begin(), arr.end(), comp);
+int maxi = 1;
+int lastInd = 0;
+for (int i = 0; i < n; i++) {
+    for (int prev = 0; prev < i; prev++) {
+        if (check(arr[i], arr[prev]) && dp[i] < (1+dp[prev])) {
+            dp[i] = 1+dp[prev];
+        }
+    }
+    if (maxi < dp[i]) {
+        maxi = dp[i];
+        lastInd = i;
+    }
+}
+return maxi;
+}
+
+// Longest Bitonic Subsequence (DP-46)
+// Similar to LIS, we just have do LIS in both the direction and find the maximum is full length
+
+int longestBitonicSequence(vector<int>& arr, int n) {
+vector<int> dp1(n, 1), dp2(n, 1);
+for (int i = 0; i < n; i++) {
+    for (int prev = 0; prev < i; prev++) {
+        if (arr[prev] < arr[i]) dp1[i] = max(dp1[i], 1+dp1[prev]);
+    }
+}
+int maxi = 0;
+for (int i = n-1; i >= 0; i--) {
+    for (int prev = n-1; prev > i; prev--) {
+        if (arr[prev] < arr[i]) dp2[i] = max(dp2[i], 1+dp2[prev]);
+    }
+    maxi = max(maxi, dp1[i] + dp2[i] - 1);
+}
+return maxi;
+}
+
+// Number of Longest Increasing Subsequences (DP-47)
+
