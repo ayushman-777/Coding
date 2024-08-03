@@ -10,7 +10,7 @@ for (i = 0; i < n * m; ++i) {
 	cout << arr1D[i] << " ";
 }
 
-// Coloumn wise storage
+// Column wise storage
 for (j = 0; j < m; ++j) {
 	for (i = 0; i < n; ++i) {
 		arr1D[j * n + i] = arr2D[i][j];
@@ -62,4 +62,37 @@ iota(parent.begin(), parent.end(), 0); // parent -> vector
 // To check number power of two
 bool isPowerofTwo(long long n) {
 	return (n != 0) && ((n & (n - 1)) == 0);
+}
+
+// To check Palindrome easiest one liner
+if (a == vector<int>(a.rbegin(), a.rend())) {
+    cout << "YES" << "\n";
+    continue;
+}
+
+// for ceiling without ceil function
+val = (a + b - 1) / b;
+
+// to get nearest smaller power of 2
+floor(log2(k))
+
+// if number is power of 2 to get power number
+ceil(log2(k))
+
+// for writing comparitor 
+// if first element is before second element 
+ // return true otherwise false
+ 
+ bool comp(int &ele1, int ele2) {
+ 	if (ele1 <= ele2) return true;
+ 	return false;
+ }
+ // OR,
+ bool comp(string &s1, string &s2) {
+	for (int i = 0; i < s1.size(); i++) {
+		if (s1[i] == s2[i]) continue;
+		if ((i + 1) & 1) return s1[i] < s2[i];
+		else return s1[i] > s2[i];
+	}
+	return false;
 }
