@@ -536,15 +536,15 @@ for (int i = (n-2); i >= 0; i--) {
 	dp = cur;
 }
 return *max_element(dp.begin(), dp.end()); // Remember to use here "dp"
-																		// not "cur" for single element case
+											// not "cur" for single element case
 																		
 // Chocolate Pickup ***3D DP !important
 // alice and bob wants to collect max chocolates in same grid (n*m)
 
 f(i1, j1, i2, j2) {
 	if (i1 < 0 || j1 < 0 || j2 < 0 || i1 >= n || j1 >= m || j2 >= m) return -1e9;
-	// if (j1 == j2) return grid[i1][j1]; <- This might give correct ans for +ive 
-												//ele matrix but its wrong
+	// if (j1 == j2) return grid[i1][j1]; <--- This might give correct ans for +ive 
+											// elements matrix but its wrong
 											// as it doesn't fit into function "f" 
 											// definatoin when returning value. 
 	if (i1 == (n-1) || i2 == (n-1)) return grid[i1][j1] + grid[i2][j2];
@@ -565,11 +565,12 @@ f(i1, j1, i2, j2) {
 	return res;
 }
 
-
 // Memoization using 3D vector/array
 
-start by calling 	vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, -1)));
-    							return f(0, 0, m-1, n, m, matrix, dp);
+start by calling :-
+	vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, -1)));
+    return f(0, 0, m-1, n, m, matrix, dp);
+
 int f(int i1, int j1, int j2, int &n, int &m, 
       vector<vector<int>> &grid, vector<vector<vector<int>>> &dp) {
     if (i1 < 0 || j1 < 0 || j2 < 0 || i1 >= n || j1 >= m || j2 >= m) return -1e9;
@@ -600,7 +601,7 @@ for (int j1 = 0; j1 < m; j1++) {
         else dp[n-1][j1][j2] = grid[n-1][j1] + grid[n-1][j2];
     }
 }
-    int ans = 0;
+int ans = 0;
 for (int i = n-2; i >= 0; i--) {
     for (int j1 = 0; j1 < m; j1++) {
         for (int j2 = 0; j2 < m; j2++) {
@@ -630,7 +631,7 @@ for (int j1 = 0; j1 < m; j1++) {
         else dp[j1][j2] = grid[n-1][j1] + grid[n-1][j2];
     }
 }
-    int ans = 0;
+int ans = 0;
 for (int i = n-2; i >= 0; i--) {
     for (int j1 = 0; j1 < m; j1++) {
         for (int j2 = 0; j2 < m; j2++) {
@@ -1981,3 +1982,427 @@ return maxi;
 
 // Number of Longest Increasing Subsequences (DP-47)
 
+vector<int> dp(n, 1), cnt(n, 1);
+int maxi = 1;
+for (int i = 0; i < n; i++) {
+    for (int prev = 0; prev < i; prev++) {
+        if (arr[prev] < arr[i] && 1+dp[prev] > dp[i]) dp[i] = 1+dp[prev], cnt[i] = cnt[prev];
+        else if (arr[prev] < arr[i] && 1+dp[prev] == dp[i]) cnt[i] += cnt[prev];
+    }
+    maxi = max(maxi, dp[i]);
+}
+int nos = 0;
+for (int i = 0; i < n; i++) {
+	if (dp[i] == maxi) nos += cnt[i];
+}
+return nos;
+
+// Partition DP       ***************************
+// Problems that changes by the way of solving falls under PDP
+->   Rules
+1. Start with entire block/array
+2. Try all partition
+               \-> {Run a loop to all partition..}
+3. Return the best possible 2 partition
+
+// Matrix Chain Multiplication (DP-48)
+
+--> start with f(1, n-1)
+f(i, j) {
+	if (i == j) return 0;
+	mini = 1e9;
+	for (k -> i -> (j-1)) {
+		steps = (arr[i-1] * arr[k] * arr[j]) + f(i, k) + f(k+1, j);
+		mini = min(mini, steps);
+	}
+	return mini;
+}
+
+// Memoization
+
+int f(int i, int j, vector<int> &arr, vector<vector<int>> &dp) {
+    if (i == j) return 0;
+    if (dp[i][j] != -1) return dp[i][j];
+    int mini = 1e9;
+    for (int k = i; k < j; k++) {
+        int steps = arr[i-1] * arr[k] * arr[j] + f(i, k, arr, dp) + f(k+1, j, arr, dp);
+        mini = min(mini, steps);
+    }
+    return dp[i][j] = mini;
+}
+
+// Tabulation
+
+int dp[n][n];
+for (int i = 0; i < n; i++) {
+	dp[i][i] = 0;
+}
+for (int i = n-1; i >= 0; i--) {
+	for (int j = i+1; j < n; j++) {
+		int mini = 1e9;
+		for (int k = i; k < j; k++) {
+			int steps = arr[i-1] * arr[k] * arr[j] + dp[i][k] + dp[k+1][j];
+			mini = min(mini, steps);
+		}
+		dp[i][j] = mini;
+	}
+}
+return dp[1][n-1];
+
+// Minimum Cost to Cut the Stick (DP-50)
+
+// start by --> firstly pushing 0 in starting and n at the end
+// 				secondly by calling f(1, c);
+f(i, j) {
+	if (i > j) return 0;
+	int mini = INT_MAX;
+	for (int ind = 0; ind <= j; ind++) {
+		int cost = cuts[j+1] - cuts[i-1] + f(ind + 1, j) + f(i, ind-1);
+		mini = min(mini, cost);
+	}
+	return mini;
+}
+
+// Memoization
+
+int f(int i, int j, vector<int> &cuts, vector<vector<int>> &dp) {
+    if (i > j) return 0;
+    if(dp[i][j] != -1) return dp[i][j];
+    int mini = INT_MAX;
+    for (int ind = i; ind <= j; ind++) {
+        int cost = cuts[j+1] - cuts[i-1] + f(i, ind - 1, cuts, dp) 
+        + f(ind +1, j, cuts, dp);
+        mini = min(mini, cost);
+    }
+    return dp[i][j] = mini;
+}
+
+// Tabulation
+
+cuts.push_back(n);
+cuts.insert(cuts.begin(), 0);
+sort(cuts.begin(), cuts.end());
+vector<vector<int>> dp(c+2, vector<int>(c+2, 0));
+for (int i = c; i >= 1; i--) {
+	for (int j = 1; j <= c; j++) {
+        if (i > j) continue;
+		int mini = INT_MAX;
+    	for (int ind = i; ind <= j; ind++) {
+    	    int cost = cuts[j+1] - cuts[i-1] + dp[i][ind - 1] + dp[ind + 1][j];
+    	    mini = min(mini, cost);
+    	}
+    	dp[i][j] = mini;
+	}
+}
+return dp[1][c];
+
+// Burst Balloons (DP-51)
+
+// start by -> pushing 1 at the start and at the end
+// 			-> f(1, n, a)
+int f(int i, int j, vector<int> &a) {
+	if (i > j) return 0;
+	int cost = 0;
+	int maxi = INT_MIN;
+	for (int ind = i; ind <= j; ind++) {
+		cost = a[i-1]*a[ind]*a[j+1] + f(i, ind-1, a) + f(ind+1, j, a);
+		maxi = max(maxi, cost);
+	}
+	return maxi;
+}
+
+// Memoization
+
+int f(int i, int j, vector<int> &a, vector<vector<int>> &dp) {
+	if (i > j) return 0;
+	if (dp[i][j] != -1) return dp[i][j];
+	int cost = 0;
+	int maxi = INT_MIN;
+	for (int ind = i; ind <= j; ind++) {
+		cost = a[i-1]*a[ind]*a[j+1] + f(i, ind-1, a, dp) + f(ind+1, j, a, dp);
+		maxi = max(maxi, cost);
+	}
+	return dp[i][j] = maxi;
+}
+int maxCoins(vector<int>& a)
+{
+	int n = a.size();
+	a.push_back(1);
+	a.insert(a.begin(), 1);
+	vector<vector<int>> dp(n+1, vector<int>(n+1, -1));
+	return f(1, n, a, dp);
+}
+
+// Tabulation
+
+int n = a.size();
+a.push_back(1);
+a.insert(a.begin(), 1);
+vector<vector<int>> dp(n+2, vector<int>(n+2, 0));
+for (int i = n; i >= 1; i--) {
+	for (int j = 1; j <= n; j++) {
+		if (i > j) continue;
+		int cost = 0;
+		int maxi = INT_MIN;
+		for (int ind = i; ind <= j; ind++) {
+			cost = a[i-1]*a[ind]*a[j+1] + dp[i][ind-1] + dp[ind+1][j];
+			maxi = max(maxi, cost);
+		}
+		dp[i][j] = maxi;
+	}
+}
+return dp[1][n];
+
+// Evaluate Boolean Expression to True (DP-52)
+
+// start with f(0, n-1, true)
+f(i, j, isTrue) {
+	if (i > j) return 0;
+	if (i == j)
+		if (isTrue) return a[i] == 'T';
+		else return a[i] == 'F';
+	
+	ways = 0;
+	for (ind = i + 1; ind <= j - 1; ind += 2) {
+		LT = f(i, ind-1, 1);
+		LF = f(i, ind-1, 0);
+		RT = f(ind+1, j, 1);
+		RF = f(ind+1, j, 0);
+		if (a[ind] == '&')
+			if (isTrue) ways += LT*RT;
+			else ways += LT*RF + LF*RT + LF*RF;
+		else if (a[ind] == '|')
+			if (isTrue) ways += LT*RT + LT*RF + LF*RT;
+			else ways += LF*RF;
+		else
+			if (isTrue) ways += LT*RF + LF*RT;
+			else ways += LF*RF + LT*RT;
+	}
+	return ways;
+}
+
+// Memoization
+
+const int mod = 1000000007;
+int f(int i, int j, bool isTrue, string &a, vector<vector<vector<int>>> &dp) {
+	if (i > j) return 0;
+	if (i == j) {
+		if (isTrue) return a[i] == 'T';
+		else return a[i] == 'F';
+	}
+
+	if (dp[i][j][isTrue] != -1) return dp[i][j][isTrue];
+
+	long long ways = 0;
+	for (int ind = i + 1; ind <= (j - 1); ind += 2) {
+		long long LT = f(i, ind - 1, true, a, dp);
+		long long LF = f(i, ind - 1, false, a, dp);
+		long long RT = f(ind + 1, j, true, a, dp);
+		long long RF = f(ind + 1, j, false, a, dp);
+		if (a[ind] == '&') {
+			if (isTrue) ways = (ways + (LT * RT) % mod) % mod;
+			else ways = (ways + (LT * RF) % mod + (LF * RT) % mod + (LF * RF) % mod) % mod;
+		} else if (a[ind] == '|') {
+			if (isTrue) ways = (ways + (LT * RT) % mod + (LT * RF) % mod + (LF * RT) % mod)%mod;
+			else ways = (ways + (LF * RF) % mod) % mod;
+		} else {
+			if (isTrue) ways = (ways + (LT * RF) % mod + (LF * RT) % mod) % mod;
+			else ways = (ways + (LF * RF) % mod + (LT * RT) % mod) % mod;
+		}
+	}
+	return dp[i][j][isTrue] = ways;
+}
+
+// Tabulation
+
+int n = a.size();
+vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(2, 0)));
+for (int i = 0; i < n; i++) {
+	for (int isTrue = 0; isTrue < 2; isTrue++) {
+		if (isTrue) dp[i][i][isTrue] = (a[i] == 'T');
+		else dp[i][i][isTrue] = (a[i] == 'F');
+	}
+}
+for (int i = n - 1; i >= 0; i--) {
+	for (int j = 0; j < n; j++) {
+		if (i >= j) continue;
+		for (int isTrue = 0; isTrue < 2; isTrue++) {
+			long long ways = 0;
+			for (int ind = i + 1; ind <= (j - 1); ind += 2) {
+				long long LT = dp[i][ind - 1][true];
+				long long LF = dp[i][ind - 1][false];
+				long long RT = dp[ind + 1][j][true];
+				long long RF = dp[ind + 1][j][false];
+				if (a[ind] == '&') {
+					if (isTrue) ways = (ways + (LT * RT) % mod) % mod;
+					else ways = (ways + (LT * RF) % mod + (LF * RT) % mod + (LF * RF) % mod) % mod;
+				} else if (a[ind] == '|') {
+					if (isTrue) ways = (ways + (LT * RT) % mod + (LT * RF) % mod + (LF * RT) % mod) % mod;
+					else ways = (ways + (LF * RF) % mod) % mod;
+				} else {
+					if (isTrue) ways = (ways + (LT * RF) % mod + (LF * RT) % mod) % mod;
+					else ways = (ways + (LF * RF) % mod + (LT * RT) % mod) % mod;
+				}
+			}
+			dp[i][j][isTrue] = ways;
+		}
+	}
+}
+return dp[0][n - 1][true];
+
+// Palindrome Partitioning - II | Front Partition (DP-53)
+
+f(i) {
+	if (i == n) return 0;
+	int minCost = INT_MAX;
+	for (int j = i; j < n; j++) {
+		if (isPalidrome(i, j, str)) {
+			int cost = 1 + f(j+1);
+			minCost = min(minCost, cost);
+		}
+	}
+	return minCost;
+}
+
+// Tabulation
+
+vector<int> dp(str.size()+1, 0);
+for (int i = str.size()-1; i >= 0; i--) {
+    int minCost = INT_MAX;
+    for (int j = i; j < str.size(); j++) {
+    	if (isPalindrome(i, j, str)) {
+    		int cost = 1 + dp[j+1];
+    		minCost = min(minCost, cost);
+    	}
+    }
+    dp[i] = minCost;
+}
+return dp[0] - 1;
+
+// Partition Array for Maximum Sum (DP-54)
+
+f(ind) {
+	if (ind == n) return 0;
+	maxAns;
+	len = 0, maxi = INT_MIN;
+	for (int j = ind; j < min(n, ind+3); j++) {
+		len++;
+		maxi = max(maxi, arr[j]);
+		sum = (len*maxi) + f(j+1);
+		maxAns = max(maxAns, sum);
+	}
+	return maxAns;
+}
+
+// Memoization
+
+int f(int ind, vector<int> &arr, int &k, vector<int> &dp) {
+    int n = arr.size();
+    if (ind == n) return 0;
+    if (dp[ind] != -1) return dp[ind];
+    int maxAns = 0;
+    int len = 0, maxi = 0;
+    for (int i = ind; i < min(n, ind+k); i++) {
+        len++;
+        maxi = max(maxi, arr[i]);
+        int sum = (len*maxi) + f(i+1, arr, k, dp);
+        maxAns = max(maxAns, sum);
+    }
+    return dp[ind] = maxAns;
+}
+
+// Tabulation
+
+int n = num.size();
+vector<int> dp(n+1, 0);
+
+for (int ind = n-1; ind >= 0; ind--) {
+    int maxAns = 0;
+	int len = 0, maxi = 0;
+	for (int i = ind; i < min(n, ind+k); i++) {
+	    len++;
+	    maxi = max(maxi, num[i]);
+	    int sum = (len*maxi) + dp[i+1];
+	    maxAns = max(maxAns, sum);
+	}
+	dp[ind] = maxAns;
+}
+return dp[0];
+
+// Count Square Submatrices with All Ones (DP-56)
+
+// Tabulation
+
+int countSquares(int n, int m, vector<vector<int>> &arr) {
+    vector<vector<int>> dp(n, vector<int>(m, 0));
+    int ans = 0;
+    for (int i = 0; i < n; i++) dp[i][0] = arr[i][0], ans += arr[i][0];
+    for (int i = 0; i < m; i++) dp[0][i] = arr[0][i], ans += arr[0][i];
+    ans -= arr[0][0];
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j < m; j++) {
+            if (arr[i][j] != 0) {
+                dp[i][j] = 1 + min({dp[i-1][j], dp[i-1][j-1], dp[i][j-1]});
+                ans += dp[i][j];
+            }
+        }
+    }
+    return ans;
+}
+
+
+
+
+
+
+///////////////////////////////////-----THE END-----//////////////////////////////////////////////
+
+// Binomial Coefficient (DP)
+int mod = 1e9 + 7;
+int f(int n, int k, vector<vector<int>> &dp) {
+    if (k > n) return 0;
+    if (k == 0 || k == n) return 1;
+    if (dp[n][k] != -1) return dp[n][k];
+    return dp[n][k] = (f(n - 1, k - 1, dp) + f(n - 1, k, dp)) % mod;
+}
+int nCr(int n, int r) {
+    vector<vector<int>> dp(n + 1, vector<int>(r + 1, -1));
+    return f(n, r, dp);
+}
+
+// Space Optimized
+
+int nCr(int n, int r) {
+	if (r > n) return 0;
+	if ((n-r) < r) r = n - r;
+	int mod = 1e9 + 7;
+	vector<int> dp(r+1, 0);
+	dp[0] = 1;
+	for (int i = 1; i <= n; i++) {
+		for (int j = min(i, r); j > 0; j--) {
+			dp[j] = (dp[j] + dp[j-1])%mod;
+		}
+	}
+	return dp[r];
+}
+
+// Permutation Coefficient
+
+int nPr(int n, int r) {
+	vector<int> fact(n+1, 0);
+	fact[0] = 1;
+	for (int i = 1; i <= n; i++) {
+		fact[i] = i * fact[i-1];
+	}
+	return fact[n] / fact[n-r];
+}
+
+// Space optimized
+
+int nPr(int n, int r) { // as nPr can be equal to n*(n-1)*(n-2)...(n-r)
+	int ans = 1;
+	for (int i = 0; i < r; i++) {
+		ans *= (n-i);
+	}
+	return ans;
+}
